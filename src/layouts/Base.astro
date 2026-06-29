@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+import { t } from '../i18n';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const pageTitle = title ?? t.site.title;
+const pageDescription = description ?? t.site.description;
+---
+
+<!doctype html>
+<html lang={t.site.lang} dir={t.site.dir}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;500;700;800&display=swap"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="/" aria-label={t.header.logoAlt}>
+          <img class="brand-logo" src="/Democratim-logo.svg" alt={t.header.logoAlt} width="162" height="56" />
+        </a>
+        <a class="party-btn" href={t.header.partySiteUrl} target="_blank" rel="noopener noreferrer">
+          {t.header.partySite}
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p class="credit">{t.footer.createdWith} <a href={t.footer.person1Url} target="_blank" rel="noopener noreferrer">{t.footer.person1}</a> {t.footer.and}<a href={t.footer.person2Url} target="_blank" rel="noopener noreferrer">{t.footer.person2}</a></p>
+      </div>
+    </footer>
+  </body>
+</html>

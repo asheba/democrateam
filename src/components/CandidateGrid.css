@@ -1,0 +1,196 @@
+.cand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding-block: 20px 170px; /* leave room for the floating bar (up to 2 chip rows) */
+}
+
+/* ---- Floating selection bar ---- */
+.selbar {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 60;
+  background: var(--brand-ink);
+  color: #fff;
+  box-shadow: 0 -8px 30px rgba(1, 12, 25, 0.25);
+  animation: selbar-in 0.2s ease;
+}
+
+@keyframes selbar-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.selbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-block: 12px;
+  flex-wrap: wrap;
+}
+
+.selbar-avatars {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* wrap onto 2 rows instead of scrolling */
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0; /* allow the flex item to shrink so chips wrap rather than overflow */
+  padding-block: 4px;
+}
+
+.selbar-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border-radius: 999px;
+  padding: 4px 10px 4px 4px;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.selbar-chip:hover {
+  background: rgba(255, 84, 62, 0.25);
+}
+
+.selbar-chip img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+
+.selbar-name {
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selbar-x {
+  font-size: 1.1rem;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.selbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-inline-start: auto;
+}
+
+/* Desktop: keep actions beside the chips so the bar stays compact while the
+   avatars wrap to 2 rows. */
+@media (min-width: 641px) {
+  .selbar-inner {
+    flex-wrap: nowrap;
+  }
+  .selbar-actions {
+    flex: 0 0 auto;
+  }
+}
+
+.selbar-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.25;
+}
+
+.selbar-rule {
+  font-size: 0.82rem;
+  color: var(--brand-yellow);
+}
+
+.selbar-rule.ok {
+  color: #76e0a3;
+}
+
+@media (max-width: 640px) {
+  .cand-grid {
+    padding-bottom: 180px; /* taller bar on mobile */
+  }
+
+  .selbar-inner {
+    gap: 10px;
+    padding-block: 10px;
+  }
+
+  /* Names off, chips become compact circular avatars with a corner × badge. */
+  .selbar-name {
+    display: none;
+  }
+
+  .selbar-avatars {
+    gap: 12px;
+    justify-content: flex-start;
+  }
+
+  .selbar-chip {
+    position: relative;
+    padding: 0;
+    gap: 0;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+  }
+
+  .selbar-chip img {
+    width: 44px;
+    height: 44px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .selbar-chip:active img {
+    border-color: #ff543e;
+  }
+
+  .selbar-x {
+    position: absolute;
+    inset-block-start: -5px;
+    inset-inline-start: -5px;
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    background: #ff543e;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    opacity: 1;
+    border: 2px solid var(--brand-ink);
+  }
+
+  /* Status on the start, button on the end — one tidy row, no wrapping. */
+  .selbar-actions {
+    width: 100%;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .selbar-status {
+    align-items: flex-start;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .selbar-actions .btn {
+    flex: 0 0 auto;
+    padding: 11px 18px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+}

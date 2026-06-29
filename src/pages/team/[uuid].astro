@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import CandidateCard from '../../components/CandidateCard';
+import { getCandidate } from '../../lib/candidates';
+import { getTeam } from '../../lib/db';
+import { t, fmt } from '../../i18n';
+import '../../components/CandidateGrid.css';
+import './team.css';
+
+// On-demand rendered: each uuid yields a different combination of cards + texts.
+export const prerender = false;
+
+const { uuid } = Astro.params;
+const team = uuid ? await getTeam(uuid) : null;
+
+if (!team) {
+  Astro.response.status = 404;
+}
+
+// Resolve full candidate data for each saved selection, preserving saved order.
+const rows = team
+  ? team.selections
+      .map((sel) => ({ candidate: getCandidate(sel.candidateId), explanation: sel.explanation }))
+      .filter((r): r is { candidate: NonNullable<ReturnType<typeof getCandidate>>; explanation: string } =>
+        Boolean(r.candidate),
+      )
+  : [];
+---
+
+{
+  team ? (
+    <Base title={fmt(t.team.heading, { name: team.voterName })}>
+      <div class="container">
+        <div class="team-head">
+          {team.voterImage ? (
+            <img class="team-voter-img" src={team.voterImage} alt={team.voterName} />
+          ) : null}
+          <div>
+            <h1>{fmt(t.team.heading, { name: team.voterName })}</h1>
+            {team.summary ? (
+              <div class="team-summary">
+                <h2>{t.team.summaryHeading}</h2>
+                <p>{team.summary}</p>
+              </div>
+            ) : null}
+          </div>
+        </div>
+
+        <div class="cand-grid team-grid">
+          {rows.map(({ candidate, explanation }) => (
+            <CandidateCard
+              candidate={candidate}
+              note={explanation || undefined}
+              noteLabel={t.team.explanationHeading}
+            />
+          ))}
+        </div>
+
+        <div class="team-cta">
+          <a class="btn" href="/">{t.team.createOwn}</a>
+        </div>
+      </div>
+    </Base>
+  ) : (
+    <Base title={t.team.notFoundTitle}>
+      <div class="container">
+        <div class="team-notfound">
+          <h1>{t.team.notFoundTitle}</h1>
+          <p>{t.team.notFoundBody}</p>
+          <a class="btn" href="/">{t.team.backHome}</a>
+        </div>
+      </div>
+    </Base>
+  )
+}

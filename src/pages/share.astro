@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import ShareForm from '../components/ShareForm';
+import { candidates } from '../lib/candidates';
+import { t } from '../i18n';
+
+// Static shell. The selection is read from localStorage by the client island,
+// so the page itself needs no per-request data.
+---
+
+<Base title={`${t.share.heading} — ${t.header.logoAlt}`}>
+  <div class="container">
+    <div class="page-head">
+      <h1>{t.share.heading}</h1>
+      <p>{t.share.intro}</p>
+    </div>
+    <ShareForm candidates={candidates} client:load />
+  </div>
+</Base>

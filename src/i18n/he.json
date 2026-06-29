@@ -1,0 +1,79 @@
+{
+  "site": {
+    "title": "הדמוקרטים — בחירת הנבחרת שלי",
+    "description": "כל מועמדי ומועמדות הפריימריז של מפלגת הדמוקרטים. קראו, השוו, ובחרו נבחרת של 6 עד 8.",
+    "dir": "rtl",
+    "lang": "he"
+  },
+  "header": {
+    "logoAlt": "הדמוקרטים",
+    "partySite": "לאתר המפלגה",
+    "partySiteUrl": "https://democrats.org.il/"
+  },
+  "footer": {
+    "createdWith": "נכתב עם 🇮🇱 על ידי",
+    "and": "ו",
+    "person1": "ענת שיבא הררי",
+    "person1Url": "https://x.com/anatanat_sh",
+    "person2": "אבישי שיבא הררי",
+    "person2Url": "https://x.com/avishay_sh"
+  },
+  "home": {
+    "heading": "המועמדים והמועמדות",
+    "intro": "לחצו על כרטיס כדי לבחור. בחרו בין 6 ל-8 מועמדים/ות כדי לשתף את הנבחרת שלכם/ן."
+  },
+  "links": {
+    "website": "אתר",
+    "facebook": "פייסבוק",
+    "instagram": "אינסטגרם",
+    "x": "X",
+    "tiktok": "טיקטוק",
+    "linkedin": "לינקדאין",
+    "whatsapp": "וואטסאפ",
+    "cv": "קורות חיים"
+  },
+  "selection": {
+    "barTitle": "הנבחרת שלי",
+    "empty": "לא נבחרו מועמדים/ות עדיין",
+    "counter": "{count} נבחרו",
+    "rule": "יש לבחור בין 6 ל-8",
+    "tooMany": "ניתן לבחור עד 8 מועמדים/ות",
+    "remove": "הסרה",
+    "shareButton": "שיתוף הבחירה שלי",
+    "selectAria": "בחירת המועמד/ת",
+    "selectedBadge": "נבחר/ה"
+  },
+  "share": {
+    "heading": "שיתוף הנבחרת שלי",
+    "intro": "הוסיפו את שמכם/ן ונמקו את הבחירה. לאחר השיתוף לא ניתן לערוך.",
+    "noSelection": "לא נבחרה נבחרת. חזרו לעמוד הראשי ובחרו בין 6 ל-8 מועמדים/ות.",
+    "backHome": "חזרה לעמוד הראשי",
+    "voterNameLabel": "השם שלי",
+    "voterNamePlaceholder": "איך לקרוא לכם/ן",
+    "voterNameRequired": "יש להזין שם",
+    "voterImageLabel": "קישור לתמונה שלי (לא חובה)",
+    "voterImagePlaceholder": "https://...",
+    "explanationLabel": "למה בחרתי במועמד/ת (לא חובה)",
+    "explanationPlaceholder": "לדעתי {name}...",
+    "summaryLabel": "סיכום הבחירה שלי (לא חובה)",
+    "summaryPlaceholder": "כמה מילים על הנבחרת שבחרתם/ן",
+    "viewDetails": "הצגת פרטים מלאים",
+    "explainChoice": "הוסיפו הסבר",
+    "candidateProfile": "פרופיל מועמד",
+    "close": "סגירה",
+    "charsLeft": "נותרו {n} תווים",
+    "submit": "שיתוף הנבחרת",
+    "submitting": "משתף/ת...",
+    "errorGeneric": "אירעה שגיאה. נסו שוב.",
+    "errorRange": "יש לבחור בין 6 ל-8 מועמדים/ות"
+  },
+  "team": {
+    "heading": "הנבחרת של {name}",
+    "summaryHeading": "דברי הסיכום",
+    "explanationHeading": "למה נבחר/ה",
+    "notFoundTitle": "הנבחרת לא נמצאה",
+    "notFoundBody": "הקישור שגוי או שהנבחרת הוסרה.",
+    "backHome": "למעבר לעמוד הראשי ולבחירת נבחרת",
+    "createOwn": "ליצירת הנבחרת שלי"
+  }
+}

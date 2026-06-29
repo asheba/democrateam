@@ -1,0 +1,191 @@
+.cand-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.cand-card.is-selectable {
+  cursor: pointer;
+}
+
+.cand-card.is-selectable:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.cand-card.is-selectable:focus-visible {
+  outline: 3px solid var(--brand-blue);
+  outline-offset: 2px;
+}
+
+.cand-card.is-selected {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px var(--brand-blue), var(--shadow);
+}
+
+.cand-badge {
+  position: absolute;
+  inset-inline-start: 12px;
+  inset-block-start: 12px;
+  z-index: 2;
+  background: var(--brand-blue);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.cand-photo-wrap {
+  position: relative;
+}
+
+.cand-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: #e9ebf6;
+  display: block;
+}
+
+/* ---- Info tooltip on photo (CSS-only: hover + focus, works without JS) ---- */
+.cand-note {
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  z-index: 3;
+}
+
+.cand-note-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: var(--brand-blue);
+  color: #fff;
+  font-weight: 800;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+}
+
+.cand-note-btn:hover,
+.cand-note-btn:focus-visible {
+  background: var(--brand-blue-2);
+  outline: none;
+}
+
+.cand-note-pop {
+  position: absolute;
+  inset-block-start: calc(100% + 8px);
+  inset-inline-end: 0;
+  width: min(260px, 70vw);
+  background: var(--brand-ink);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  pointer-events: none;
+}
+
+.cand-note-pop strong {
+  display: block;
+  color: var(--brand-yellow);
+  font-size: 0.78rem;
+  margin-bottom: 2px;
+}
+
+.cand-note-pop span {
+  white-space: pre-line;
+}
+
+.cand-note:hover .cand-note-pop,
+.cand-note:focus-within .cand-note-pop {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.cand-body {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.cand-name {
+  margin: 0;
+  font-size: 1.18rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.cand-title {
+  color: var(--brand-blue-2);
+  font-weight: 700;
+}
+
+.cand-bio {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.95rem;
+  white-space: pre-line;
+}
+
+.cand-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.cand-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--brand-ink);
+  border: 1px solid var(--border);
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.cand-link:hover {
+  background: var(--brand-blue);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.cand-link--cv {
+  width: auto;
+  padding-inline: 12px;
+  border-radius: 999px;
+  gap: 6px;
+}
+
+.cand-link--cv::after {
+  content: attr(aria-label);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
