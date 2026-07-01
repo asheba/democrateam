@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { byId } from '../../lib/candidates';
-import { insertTeam, type TeamSelection } from '../../lib/db';
+import { insertTeam, updateTeam, getTeamByPassword, type TeamSelection } from '../../lib/db';
 import { MIN_SELECTION, MAX_SELECTION } from '../../lib/selection';
 import {
   MAX_VOTER_NAME,
@@ -18,6 +18,19 @@ const json = (data: unknown, status = 200) =>
   });
 
 const bad = (msg: string) => json({ error: msg }, 400);
+
+export const GET: APIRoute = async ({ url }) => {
+  const uuid = url.searchParams.get('uuid') ?? '';
+  const password = url.searchParams.get('password') ?? '';
+  if (!uuid || !password) return bad('missing params');
+  try {
+    const team = await getTeamByPassword(password);
+    if (!team || team.uuid !== uuid) return json({ error: 'unauthorized' }, 401);
+    return json(team);
+  } catch {
+    return json({ error: 'storage error' }, 500);
+  }
+};
 
 export const POST: APIRoute = async ({ request }) => {
   let body: unknown;
@@ -76,11 +89,23 @@ export const POST: APIRoute = async ({ request }) => {
     selections.push({ candidateId, explanation });
   }
 
-  const uuid = crypto.randomUUID();
+  // password — client-supplied or server-generated
+  const password =
+    typeof b.password === 'string' && b.password.trim().length > 0
+      ? b.password.trim()
+      : crypto.randomUUID();
+
   try {
-    await insertTeam({ uuid, voterName, voterImage, summary, selections });
+    const existing = await getTeamByPassword(password);
+    if (existing) {
+      const ok = await updateTeam(existing.uuid, { voterName, voterImage, summary, selections });
+      if (!ok) return json({ error: 'storage error' }, 500);
+      return json({ uuid: existing.uuid }, 200);
+    }
+    const uuid = crypto.randomUUID();
+    await insertTeam({ uuid, voterName, voterImage, summary, selections, password });
+    return json({ uuid }, 201);
   } catch {
     return json({ error: 'storage error' }, 500);
   }
-  return json({ uuid }, 201);
 };

@@ -5,7 +5,9 @@ import {
   MIN_SELECTION,
   isValidCount,
   loadSelection,
-  clearSelection,
+  loadTeamCredentials,
+  saveTeamCredentials,
+  clearTeamCredentials,
 } from '../lib/selection';
 import { MAX_EXPLANATION, MAX_SUMMARY, MAX_VOTER_NAME } from '../lib/limits';
 import { t, fmt } from '../i18n';
@@ -29,10 +31,41 @@ export default function ShareForm({ candidates }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [modalId, setModalId] = useState<string | null>(null);
   const [openExplainId, setOpenExplainId] = useState<string | null>(null);
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     setSelectedIds(loadSelection().filter((id) => byId.has(id)));
+
+    const creds = loadTeamCredentials();
+    const pw = creds ? creds.password : crypto.randomUUID();
+    setPassword(pw);
     setReady(true);
+
+    if (creds) {
+      fetch(
+        `/api/teams?uuid=${encodeURIComponent(creds.uuid)}&password=${encodeURIComponent(creds.password)}`,
+      )
+        .then(async (r) => {
+          if (r.status === 401) {
+            clearTeamCredentials();
+            setPassword(crypto.randomUUID());
+            return null;
+          }
+          if (!r.ok) return null;
+          return r.json() as Promise<{
+            voterName: string;
+            voterImage: string | null;
+            summary: string | null;
+          }>;
+        })
+        .catch(() => null)
+        .then((team) => {
+          if (!team) return;
+          setVoterName(team.voterName ?? '');
+          setVoterImage(team.voterImage ?? '');
+          setSummary(team.summary ?? '');
+        });
+    }
   }, [byId]);
 
   const selected = selectedIds
@@ -60,6 +93,7 @@ export default function ShareForm({ candidates }: Props) {
             candidateId: c.id,
             explanation: (explanations[c.id] ?? '').trim(),
           })),
+          password,
         }),
       });
       if (!res.ok) {
@@ -68,7 +102,7 @@ export default function ShareForm({ candidates }: Props) {
         return;
       }
       const data = (await res.json()) as { uuid: string };
-      clearSelection();
+      saveTeamCredentials(data.uuid, password);
       window.location.href = `/team/${data.uuid}`;
     } catch {
       setError(t.share.errorGeneric);

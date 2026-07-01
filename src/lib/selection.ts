@@ -36,3 +36,45 @@ export function clearSelection(): void {
     /* ignore */
   }
 }
+
+const CREDENTIALS_KEY = 'democrateam.credentials';
+
+export function loadTeamCredentials(): { uuid: string; password: string } | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(CREDENTIALS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      typeof parsed.uuid === 'string' &&
+      typeof parsed.password === 'string' &&
+      parsed.uuid.length > 0 &&
+      parsed.password.length > 0
+    ) {
+      return { uuid: parsed.uuid, password: parsed.password };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveTeamCredentials(uuid: string, password: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(CREDENTIALS_KEY, JSON.stringify({ uuid, password }));
+  } catch {
+    /* ignore quota / privacy-mode errors */
+  }
+}
+
+export function clearTeamCredentials(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem(CREDENTIALS_KEY);
+  } catch {
+    /* ignore */
+  }
+}

@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { type Candidate } from '../lib/candidates';
 import {
   MAX_SELECTION,
-  MIN_SELECTION,
   isValidCount,
   loadSelection,
   saveSelection,
+  loadTeamCredentials,
+  clearTeamCredentials,
 } from '../lib/selection';
 import { t, fmt } from '../i18n';
 import CandidateCard from './CandidateCard';
@@ -19,14 +20,50 @@ export default function CandidateGrid({ candidates }: Props) {
   const byId = useMemo(() => new Map(candidates.map((c) => [c.id, c])), [candidates]);
   const [selected, setSelected] = useState<string[]>([]);
   const [warnTooMany, setWarnTooMany] = useState(false);
+  const [isLoadingServer, setIsLoadingServer] = useState(false);
+  const [serverLoaded, setServerLoaded] = useState(false);
+  const didHydrate = useRef(false);
 
-  // Hydrate from localStorage on mount; keep only ids that still exist.
   useEffect(() => {
-    setSelected(loadSelection().filter((id) => byId.has(id)));
+    const creds = loadTeamCredentials();
+    if (creds) {
+      setIsLoadingServer(true);
+      fetch(
+        `/api/teams?uuid=${encodeURIComponent(creds.uuid)}&password=${encodeURIComponent(creds.password)}`,
+      )
+        .then(async (r) => {
+          if (r.status === 401) {
+            clearTeamCredentials();
+            return null;
+          }
+          if (!r.ok) return null;
+          return r.json() as Promise<{ selections: Array<{ candidateId: string }> }>;
+        })
+        .catch(() => null)
+        .then((team) => {
+          didHydrate.current = true;
+          if (team) {
+            const ids = team.selections
+              .map((s) => s.candidateId)
+              .filter((id) => byId.has(id));
+            setSelected(ids);
+            saveSelection(ids);
+            setServerLoaded(true);
+            setTimeout(() => setServerLoaded(false), 3000);
+          } else {
+            setSelected(loadSelection().filter((id) => byId.has(id)));
+          }
+          setIsLoadingServer(false);
+        });
+    } else {
+      didHydrate.current = true;
+      setSelected(loadSelection().filter((id) => byId.has(id)));
+    }
   }, [byId]);
 
-  // Persist on every change.
+  // Persist on every change — guard prevents writing empty state before hydration.
   useEffect(() => {
+    if (!didHydrate.current) return;
     saveSelection(selected);
   }, [selected]);
 
@@ -40,7 +77,7 @@ export default function CandidateGrid({ candidates }: Props) {
       }
       if (prev.length >= MAX_SELECTION) {
         setWarnTooMany(true);
-        return prev; // block the 9th
+        return prev;
       }
       setWarnTooMany(false);
       return [...prev, id];
@@ -55,6 +92,17 @@ export default function CandidateGrid({ candidates }: Props) {
 
   return (
     <>
+      {isLoadingServer && (
+        <p className="grid-status" role="status" aria-live="polite">
+          {t.home.loading}
+        </p>
+      )}
+      {serverLoaded && (
+        <p className="grid-status grid-status--ok" role="status" aria-live="polite">
+          {t.home.selectionLoaded}
+        </p>
+      )}
+
       <div className="cand-grid">
         {candidates.map((c) => (
           <CandidateCard
