@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { t } from '../i18n';
+import { abs } from '../lib/site';
 import UserMenu from '../components/UserMenu';
 
 interface Props {
@@ -11,6 +12,8 @@ interface Props {
 const { title, description } = Astro.props;
 const pageTitle = title ?? t.site.title;
 const pageDescription = description ?? t.site.description;
+const canonical = abs(Astro.url.pathname);
+const ogImage = abs('/Democratim-logo.svg');
 ---
 
 <!doctype html>
@@ -21,8 +24,14 @@ const pageDescription = description ?? t.site.description;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+    <slot name="head" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

@@ -1,8 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import TeamGrid from '../../components/TeamGrid';
-import { getCandidate } from '../../lib/candidates';
+import { getCandidate, LINK_ORDER } from '../../lib/candidates';
 import { getTeam } from '../../lib/db';
+import { abs } from '../../lib/site';
 import { t, fmt } from '../../i18n';
 import './team.css';
 
@@ -35,11 +36,44 @@ const initials = team
       .map((w) => Array.from(w)[0] ?? '')
       .join('')
   : '';
+
+// LLM-readable variants of this team page (public but unlisted).
+const mdPath = `${Astro.url.pathname}.md`;
+const jsonPath = `${Astro.url.pathname}.json`;
+const mdUrl = abs(mdPath);
+
+// schema.org ItemList of the selected candidates, mirroring the visible cards.
+const teamItemList = team
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: fmt(t.team.heading, { name: team.voterName }),
+      numberOfItems: rows.length,
+      itemListElement: rows.map((r, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Person',
+          name: r.candidate.name,
+          ...(r.candidate.title ? { jobTitle: r.candidate.title } : {}),
+          image: abs(r.candidate.photo),
+          description: r.candidate.bio,
+          sameAs: LINK_ORDER.map((k) => r.candidate.links[k]).filter(Boolean),
+        },
+      })),
+    }
+  : null;
 ---
 
 {
   team ? (
     <Base title={fmt(t.team.heading, { name: team.voterName })}>
+      <Fragment slot="head">
+        <meta name="robots" content="noindex" />
+        <link rel="alternate" type="text/markdown" href={mdPath} />
+        <link rel="alternate" type="application/json" href={jsonPath} />
+        <script type="application/ld+json" set:html={JSON.stringify(teamItemList)} />
+      </Fragment>
       <div class="container">
         <div class="team-head">
           <div class="team-identity">
@@ -70,11 +104,18 @@ const initials = team
 
         <div class="team-cta">
           <a class="btn" href="/">{t.team.createOwn}</a>
+          <button class="btn btn-ghost" type="button" data-copy-ai={mdUrl} data-copied-label={t.ai.copied}>
+            {t.ai.copyLink}
+          </button>
         </div>
       </div>
+      <script>import '../../scripts/copy-ai-link';</script>
     </Base>
   ) : (
     <Base title={t.team.notFoundTitle}>
+      <Fragment slot="head">
+        <meta name="robots" content="noindex" />
+      </Fragment>
       <div class="container">
         <div class="team-notfound">
           <h1>{t.team.notFoundTitle}</h1>
