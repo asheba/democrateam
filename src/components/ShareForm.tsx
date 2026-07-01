@@ -196,7 +196,6 @@ export default function ShareForm({ candidates }: Props) {
                 type="text"
                 value={voterName}
                 maxLength={MAX_VOTER_NAME}
-                placeholder={t.share.voterNamePlaceholder}
                 onChange={(e) => setVoterName(e.target.value)}
                 required
               />

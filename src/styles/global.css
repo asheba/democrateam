@@ -147,7 +147,6 @@ main {
 .page-head p {
   margin: 0;
   color: var(--text-muted);
-  max-width: 60ch;
 }
 
 .btn {

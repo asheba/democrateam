@@ -1,7 +1,7 @@
 {
   "site": {
-    "title": "הדמוקרטים — בחירת הנבחרת שלי",
-    "description": "כל מועמדי ומועמדות הפריימריז של מפלגת הדמוקרטים. קראו, השוו, ובחרו נבחרת של 6 עד 8.",
+    "title": "הדמוקרטים — בוחרים/ות נבחרת",
+    "description": "כל המועמדים והמועמדות בפריימריז של מפלגת הדמוקרטים. קראו, השוו ובחרו נבחרת של 6 עד 8.",
     "dir": "rtl",
     "lang": "he"
   },
@@ -13,7 +13,7 @@
     "logout": "התנתקות"
   },
   "footer": {
-    "createdWith": "נכתב עם 🇮🇱 על ידי",
+    "createdWith": "נוצר על ידי",
     "and": "ו",
     "person1": "ענת שיבא הררי",
     "person1Url": "https://x.com/anatanat_sh",
@@ -22,14 +22,14 @@
   },
   "home": {
     "heading": "המועמדים והמועמדות",
-    "intro": "לחצו על כרטיס כדי לבחור. בחרו בין 6 ל-8 מועמדים/ות כדי לשתף את הנבחרת שלכם/ן.",
+    "intro": "בחרו 6 עד 8 מועמדים/ות ושתפו אחרים בבחירה שלכם/ן.",
     "loading": "טוען את הנבחרת שלך...",
     "selectionLoaded": "הנבחרת שלך נטענה ✓",
-    "searchPlaceholder": "חיפוש לפי שם או מילה בתיאור",
+    "searchPlaceholder": "חיפוש לפי שם או תוכן",
     "searchLabel": "חיפוש מועמדים/ות",
     "filterWomen": "נשים",
     "filterMen": "גברים",
-    "noResults": "לא נמצאו מועמדים/ות התואמים לחיפוש"
+    "noResults": "לא מצאנו מועמדים/ות שמתאימים/ות לחיפוש"
   },
   "links": {
     "website": "אתר",
@@ -43,24 +43,22 @@
   },
   "selection": {
     "barTitle": "הנבחרת שלי",
-    "empty": "לא נבחרו מועמדים/ות עדיין",
+    "empty": "עדיין לא בחרתם/ן מועמדים/ות",
     "counter": "{count} נבחרו",
-    "rule": "יש לבחור בין 6 ל-8",
-    "tooMany": "ניתן לבחור עד 8 מועמדים/ות",
+    "rule": "צריך לבחור בין 6 ל-8",
+    "tooMany": "אפשר לבחור עד 8 מועמדים/ות",
     "remove": "הסרה",
-    "shareButton": "שיתוף הבחירה שלי",
+    "shareButton": "שיתוף הנבחרת שלי",
     "selectAria": "בחירת המועמד/ת",
     "selectedBadge": "נבחר/ה"
   },
   "share": {
     "heading": "שיתוף הנבחרת שלי",
-    "intro": "הוסיפו את שמכם/ן ונמקו את הבחירה.",
-    "noSelection": "לא נבחרה נבחרת. חזרו לעמוד הראשי ובחרו בין 6 ל-8 מועמדים/ות.",
+    "noSelection": "עדיין לא בחרתם/ן נבחרת. חזרו לעמוד הראשי ובחרו בין 6 ל-8 מועמדים/ות.",
     "backHome": "חזרה לעמוד הראשי",
-    "voterNameLabel": "השם שלי",
-    "voterNamePlaceholder": "איך לקרוא לכם/ן",
-    "voterNameRequired": "יש להזין שם",
-    "anonName": "משתמש/ת",
+    "voterNameLabel": "שם",
+    "voterNameRequired": "צריך להזין שם",
+    "anonName": "אנונימי/ת",
     "orDivider": "או",
     "perkPhoto": "תמונת פרופיל",
     "perkVerified": "תג מאומת",
@@ -69,34 +67,34 @@
     "explanationLabel": "למה בחרתי במועמד/ת (לא חובה)",
     "explanationPlaceholder": "לדעתי {name}...",
     "summaryLabel": "סיכום הבחירה שלי (לא חובה)",
-    "summaryPlaceholder": "כמה מילים על הנבחרת שבחרתם/ן",
+    "summaryPlaceholder": "כמה מילים על הנבחרת",
     "viewDetails": "הצגת פרטים מלאים",
     "explainChoice": "הוסיפו הסבר",
-    "candidateProfile": "פרופיל מועמד",
+    "candidateProfile": "פרופיל מועמד/ת",
     "close": "סגירה",
     "charsLeft": "נותרו {n} תווים",
     "submit": "שיתוף הנבחרת",
     "submitting": "משתף/ת...",
-    "errorGeneric": "אירעה שגיאה. נסו שוב.",
-    "errorRange": "יש לבחור בין 6 ל-8 מועמדים/ות"
+    "errorGeneric": "משהו השתבש. נסו שוב.",
+    "errorRange": "צריך לבחור בין 6 ל-8 מועמדים/ות"
   },
   "team": {
     "heading": "הנבחרת של {name}",
     "myTeam": "הנבחרת שלי",
     "verifiedBadge": "מאומת",
-    "summaryHeading": "דברי הסיכום",
+    "summaryHeading": "לסיכום",
     "explanationHeading": "למה נבחר/ה",
     "linksLabel": "{n} קישורים",
     "viewProfile": "הצגת פרופיל מלא",
     "close": "סגירה",
     "notFoundTitle": "הנבחרת לא נמצאה",
     "notFoundBody": "הקישור שגוי או שהנבחרת הוסרה.",
-    "backHome": "למעבר לעמוד הראשי ולבחירת נבחרת",
+    "backHome": "לבחירת נבחרת משלכם/ן",
     "createOwn": "ליצירת הנבחרת שלי"
   },
   "ai": {
-    "copyLink": "העתקת קישור לקריאה ע״י AI",
+    "copyLink": "העתקת קישור ל-AI",
     "copied": "הקישור הועתק ✓",
-    "hint": "העתיקו קישור והדביקו ב-ChatGPT או Claude כדי לשוחח על המועמדים/ות"
+    "hint": "העתיקו את הקישור והדביקו ב-ChatGPT או ב-Claude כדי לשוחח על המועמדים/ות"
   }
 }
