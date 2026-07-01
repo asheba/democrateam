@@ -8,7 +8,9 @@
   "header": {
     "logoAlt": "הדמוקרטים",
     "partySite": "לאתר המפלגה",
-    "partySiteUrl": "https://democrats.org.il/"
+    "partySiteUrl": "https://democrats.org.il/",
+    "avatarAlt": "החשבון שלי",
+    "logout": "התנתקות"
   },
   "footer": {
     "createdWith": "נכתב עם 🇮🇱 על ידי",
@@ -53,8 +55,12 @@
     "voterNameLabel": "השם שלי",
     "voterNamePlaceholder": "איך לקרוא לכם/ן",
     "voterNameRequired": "יש להזין שם",
-    "voterImageLabel": "קישור לתמונה שלי (לא חובה)",
-    "voterImagePlaceholder": "https://...",
+    "anonName": "משתמש/ת",
+    "orDivider": "או",
+    "perkPhoto": "תמונת פרופיל",
+    "perkVerified": "תג מאומת",
+    "signInGoogle": "התחברות עם Google",
+    "verifiedYou": "מאומת/ת",
     "explanationLabel": "למה בחרתי במועמד/ת (לא חובה)",
     "explanationPlaceholder": "לדעתי {name}...",
     "summaryLabel": "סיכום הבחירה שלי (לא חובה)",
@@ -71,6 +77,8 @@
   },
   "team": {
     "heading": "הנבחרת של {name}",
+    "myTeam": "הנבחרת שלי",
+    "verifiedBadge": "מאומת",
     "summaryHeading": "דברי הסיכום",
     "explanationHeading": "למה נבחר/ה",
     "notFoundTitle": "הנבחרת לא נמצאה",

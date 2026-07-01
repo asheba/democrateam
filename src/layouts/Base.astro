@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { t } from '../i18n';
+import UserMenu from '../components/UserMenu';
 
 interface Props {
   title?: string;
@@ -35,9 +36,12 @@ const pageDescription = description ?? t.site.description;
         <a class="brand" href="/" aria-label={t.header.logoAlt}>
           <img class="brand-logo" src="/Democratim-logo.svg" alt={t.header.logoAlt} width="162" height="56" />
         </a>
-        <a class="party-btn" href={t.header.partySiteUrl} target="_blank" rel="noopener noreferrer">
-          {t.header.partySite}
-        </a>
+        <div class="header-actions">
+          <a class="party-btn" href={t.header.partySiteUrl} target="_blank" rel="noopener noreferrer">
+            {t.header.partySite}
+          </a>
+          <UserMenu client:load />
+        </div>
       </div>
     </header>
 

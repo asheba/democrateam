@@ -31,6 +31,161 @@
   gap: 16px;
 }
 
+/* ---- Verified identity (logged-in) ---- */
+.share-identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.share-identity-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 auto;
+  background: #e9ebf6;
+}
+
+.share-identity-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: #fff;
+  background: var(--brand-blue);
+  text-transform: uppercase;
+}
+
+.share-identity-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.share-identity-name {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.verified-badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0a7d33;
+  background: #e4f5e9;
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+/* ---- Either type a name OR connect (two columns on desktop) ---- */
+.share-choice {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+/* Vertical "OR" divider on desktop. */
+.share-or {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.share-or::before,
+.share-or::after {
+  content: '';
+  flex: 1;
+  width: 1px;
+  background: var(--border);
+}
+
+/* ---- Verify upsell (anonymous) ---- */
+.share-verify-upsell {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  background: var(--bg);
+}
+
+.share-verify-perks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.share-verify-perks li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.share-verify-perks li::before {
+  content: '✓';
+  color: #0a7d33;
+  font-weight: 700;
+}
+
+/* Stack the choice on narrow screens, with a horizontal divider. */
+@media (max-width: 640px) {
+  .share-choice {
+    grid-template-columns: 1fr;
+  }
+
+  .share-or {
+    flex-direction: row;
+  }
+
+  .share-or::before,
+  .share-or::after {
+    width: auto;
+    height: 1px;
+  }
+}
+
+.share-verify-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-social {
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 9px 18px;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-social:hover {
+  background: var(--bg);
+  transform: translateY(-1px);
+}
+
 .field {
   display: flex;
   flex-direction: column;

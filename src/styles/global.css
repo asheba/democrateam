@@ -74,6 +74,13 @@ a {
   align-items: center;
 }
 
+/* Avatar sits at the far (inline-start) edge, pushing the party link toward it. */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .brand-logo {
   height: 40px;
   width: auto;

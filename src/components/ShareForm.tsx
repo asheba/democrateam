@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { type Candidate } from '../lib/candidates';
 import {
-  MAX_SELECTION,
-  MIN_SELECTION,
   isValidCount,
   loadSelection,
   loadTeamCredentials,
@@ -11,6 +9,7 @@ import {
 } from '../lib/selection';
 import { MAX_EXPLANATION, MAX_SUMMARY, MAX_VOTER_NAME } from '../lib/limits';
 import { t, fmt } from '../i18n';
+import { signIn, useSession } from '../lib/auth-client';
 import CandidateCard from './CandidateCard';
 import './ShareForm.css';
 
@@ -21,10 +20,12 @@ interface Props {
 export default function ShareForm({ candidates }: Props) {
   const byId = useMemo(() => new Map(candidates.map((c) => [c.id, c])), [candidates]);
 
+  const { data: session, isPending } = useSession();
+  const loggedIn = Boolean(session);
+
   const [ready, setReady] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [voterName, setVoterName] = useState('');
-  const [voterImage, setVoterImage] = useState('');
   const [summary, setSummary] = useState('');
   const [explanations, setExplanations] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -33,68 +34,111 @@ export default function ShareForm({ candidates }: Props) {
   const [openExplainId, setOpenExplainId] = useState<string | null>(null);
   const [password, setPassword] = useState('');
 
+  // Load the selection + anonymous credentials from localStorage on mount.
   useEffect(() => {
     setSelectedIds(loadSelection().filter((id) => byId.has(id)));
-
     const creds = loadTeamCredentials();
-    const pw = creds ? creds.password : crypto.randomUUID();
-    setPassword(pw);
+    setPassword(creds ? creds.password : crypto.randomUUID());
     setReady(true);
+  }, [byId]);
 
-    if (creds) {
-      fetch(
-        `/api/teams?uuid=${encodeURIComponent(creds.uuid)}&password=${encodeURIComponent(creds.password)}`,
-      )
+  // Prefill an existing team once we know the auth state.
+  useEffect(() => {
+    if (isPending) return;
+
+    type TeamData = {
+      voterName?: string;
+      summary: string | null;
+      selections?: { candidateId: string; explanation: string }[];
+    };
+
+    const applyTeam = (team: TeamData) => {
+      setSummary(team.summary ?? '');
+      if (Array.isArray(team.selections)) {
+        const map: Record<string, string> = {};
+        for (const s of team.selections) if (s.explanation) map[s.candidateId] = s.explanation;
+        setExplanations(map);
+      }
+    };
+
+    if (session) {
+      // Authenticated: the server resolves the team from the session. If none yet,
+      // try to claim the anonymous team the client still holds credentials for.
+      fetch('/api/teams')
         .then(async (r) => {
-          if (r.status === 401) {
-            clearTeamCredentials();
-            setPassword(crypto.randomUUID());
-            return null;
+          if (r.ok) return r.json() as Promise<TeamData>;
+          if (r.status === 404) {
+            const creds = loadTeamCredentials();
+            if (!creds) return null;
+            const claimed = await fetch('/api/teams/claim', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ password: creds.password }),
+            });
+            if (claimed.ok) {
+              clearTeamCredentials();
+              return claimed.json() as Promise<TeamData>;
+            }
           }
-          if (!r.ok) return null;
-          return r.json() as Promise<{
-            voterName: string;
-            voterImage: string | null;
-            summary: string | null;
-          }>;
+          return null;
         })
         .catch(() => null)
         .then((team) => {
-          if (!team) return;
-          setVoterName(team.voterName ?? '');
-          setVoterImage(team.voterImage ?? '');
-          setSummary(team.summary ?? '');
+          if (team) applyTeam(team);
         });
+      return;
     }
-  }, [byId]);
+
+    const creds = loadTeamCredentials();
+    if (!creds) return;
+    fetch(
+      `/api/teams?uuid=${encodeURIComponent(creds.uuid)}&password=${encodeURIComponent(creds.password)}`,
+    )
+      .then(async (r) => {
+        if (r.status === 401) {
+          clearTeamCredentials();
+          setPassword(crypto.randomUUID());
+          return null;
+        }
+        if (!r.ok) return null;
+        return r.json() as Promise<TeamData>;
+      })
+      .catch(() => null)
+      .then((team) => {
+        if (!team) return;
+        setVoterName(team.voterName ?? '');
+        applyTeam(team);
+      });
+  }, [session, isPending]);
 
   const selected = selectedIds
     .map((id) => byId.get(id))
     .filter((c): c is Candidate => Boolean(c));
 
   const countOk = isValidCount(selected.length);
-  const nameOk = voterName.trim().length > 0;
-  const canSubmit = ready && countOk && nameOk && !submitting;
+  const nameOk = loggedIn || voterName.trim().length > 0;
+  const canSubmit = ready && !isPending && countOk && nameOk && !submitting;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit) return;
     setSubmitting(true);
     setError(null);
+
+    const selections = selected.map((c) => ({
+      candidateId: c.id,
+      explanation: (explanations[c.id] ?? '').trim(),
+    }));
+
+    const body = loggedIn
+      ? { summary: summary.trim() || null, selections }
+      : { voterName: voterName.trim(), summary: summary.trim() || null, selections, password };
+
     try {
       const res = await fetch('/api/teams', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          voterName: voterName.trim(),
-          voterImage: voterImage.trim() || null,
-          summary: summary.trim() || null,
-          selections: selected.map((c) => ({
-            candidateId: c.id,
-            explanation: (explanations[c.id] ?? '').trim(),
-          })),
-          password,
-        }),
+        body: JSON.stringify(body),
       });
       if (!res.ok) {
         setError(res.status === 400 ? t.share.errorRange : t.share.errorGeneric);
@@ -102,7 +146,7 @@ export default function ShareForm({ candidates }: Props) {
         return;
       }
       const data = (await res.json()) as { uuid: string };
-      saveTeamCredentials(data.uuid, password);
+      if (!loggedIn) saveTeamCredentials(data.uuid, password);
       window.location.href = `/team/${data.uuid}`;
     } catch {
       setError(t.share.errorGeneric);
@@ -122,31 +166,62 @@ export default function ShareForm({ candidates }: Props) {
   return (
     <form className="share-form" onSubmit={handleSubmit}>
       <div className="share-meta">
-        <div className="share-meta-top">
-          <label className="field">
-            <span className="field-label">
-              {t.share.voterNameLabel} <span className="req">*</span>
-            </span>
-            <input
-              type="text"
-              value={voterName}
-              maxLength={MAX_VOTER_NAME}
-              placeholder={t.share.voterNamePlaceholder}
-              onChange={(e) => setVoterName(e.target.value)}
-              required
-            />
-          </label>
+        {loggedIn ? (
+          <div className="share-identity">
+            {session!.user.image ? (
+              <img
+                className="share-identity-avatar"
+                src={session!.user.image}
+                alt={session!.user.name}
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <span className="share-identity-avatar share-identity-fallback" aria-hidden="true">
+                {(session!.user.name || '?').charAt(0)}
+              </span>
+            )}
+            <div className="share-identity-main">
+              <span className="share-identity-name">{session!.user.name}</span>
+              <span className="verified-badge">✓ {t.share.verifiedYou}</span>
+            </div>
+          </div>
+        ) : (
+          <div className="share-choice">
+            <label className="field">
+              <span className="field-label">
+                {t.share.voterNameLabel} <span className="req">*</span>
+              </span>
+              <input
+                type="text"
+                value={voterName}
+                maxLength={MAX_VOTER_NAME}
+                placeholder={t.share.voterNamePlaceholder}
+                onChange={(e) => setVoterName(e.target.value)}
+                required
+              />
+            </label>
 
-          <label className="field">
-            <span className="field-label">{t.share.voterImageLabel}</span>
-            <input
-              type="url"
-              value={voterImage}
-              placeholder={t.share.voterImagePlaceholder}
-              onChange={(e) => setVoterImage(e.target.value)}
-            />
-          </label>
-        </div>
+            <div className="share-or">
+              <span>{t.share.orDivider}</span>
+            </div>
+
+            <div className="share-verify-upsell">
+              <div className="share-verify-btns">
+                <button
+                  type="button"
+                  className="btn-social"
+                  onClick={() => signIn.social({ provider: 'google', callbackURL: '/share' })}
+                >
+                  {t.share.signInGoogle}
+                </button>
+              </div>
+              <ul className="share-verify-perks">
+                <li>{t.share.perkPhoto}</li>
+                <li>{t.share.perkVerified}</li>
+              </ul>
+            </div>
+          </div>
+        )}
 
         <label className="field">
           <span className="field-label">{t.share.summaryLabel}</span>

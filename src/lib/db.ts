@@ -28,15 +28,25 @@ function ensureSchema(): Promise<void> {
            summary     TEXT,
            selections  TEXT NOT NULL,
            created_at  INTEGER NOT NULL,
-           password    TEXT NOT NULL DEFAULT ''
+           password    TEXT NOT NULL DEFAULT '',
+           user_id     TEXT,
+           verified    INTEGER NOT NULL DEFAULT 0
          )`,
       )
       .then(async () => {
         const info = await getClient().execute(`PRAGMA table_info(teams)`);
-        const hasPassword = info.rows.some((r) => String(r['name']) === 'password');
-        if (!hasPassword) {
+        const columns = new Set(info.rows.map((r) => String(r['name'])));
+        if (!columns.has('password')) {
           await getClient().execute(
             `ALTER TABLE teams ADD COLUMN password TEXT NOT NULL DEFAULT ''`,
+          );
+        }
+        if (!columns.has('user_id')) {
+          await getClient().execute(`ALTER TABLE teams ADD COLUMN user_id TEXT`);
+        }
+        if (!columns.has('verified')) {
+          await getClient().execute(
+            `ALTER TABLE teams ADD COLUMN verified INTEGER NOT NULL DEFAULT 0`,
           );
         }
       });
@@ -56,6 +66,7 @@ export interface Team {
   summary: string | null;
   selections: TeamSelection[];
   createdAt: number;
+  verified: boolean;
 }
 
 export async function insertTeam(team: {
@@ -65,11 +76,13 @@ export async function insertTeam(team: {
   summary: string | null;
   selections: TeamSelection[];
   password: string;
+  userId: string | null;
+  verified: boolean;
 }): Promise<void> {
   await ensureSchema();
   await getClient().execute({
-    sql: `INSERT INTO teams (uuid, voter_name, voter_image, summary, selections, created_at, password)
-          VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    sql: `INSERT INTO teams (uuid, voter_name, voter_image, summary, selections, created_at, password, user_id, verified)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     args: [
       team.uuid,
       team.voterName,
@@ -78,6 +91,8 @@ export async function insertTeam(team: {
       JSON.stringify(team.selections),
       Date.now(),
       team.password,
+      team.userId,
+      team.verified ? 1 : 0,
     ],
   });
 }
@@ -99,40 +114,65 @@ export async function updateTeam(
   return (result.rowsAffected ?? 0) > 0;
 }
 
-export async function getTeamByPassword(password: string): Promise<Team | null> {
+/**
+ * Reassign an anonymous team to a newly-authenticated user and mark it verified.
+ * Guarded by `user_id IS NULL` so it only ever claims an unowned team.
+ */
+export async function claimTeam(
+  uuid: string,
+  userId: string,
+  voterName: string,
+  voterImage: string | null,
+): Promise<boolean> {
   await ensureSchema();
   const result = await getClient().execute({
-    sql: `SELECT uuid, voter_name, voter_image, summary, selections, created_at
-          FROM teams WHERE password = ? LIMIT 1`,
-    args: [password],
+    sql: `UPDATE teams SET user_id = ?, verified = 1, password = '', voter_name = ?, voter_image = ?
+          WHERE uuid = ? AND user_id IS NULL`,
+    args: [userId, voterName, voterImage, uuid],
   });
-  const row = result.rows[0];
-  if (!row) return null;
+  return (result.rowsAffected ?? 0) > 0;
+}
+
+function rowToTeam(row: Record<string, unknown>): Team {
   return {
     uuid: String(row['uuid']),
     voterName: String(row['voter_name']),
-    voterImage: row['voter_image'] === null ? null : String(row['voter_image']),
-    summary: row['summary'] === null ? null : String(row['summary']),
+    voterImage: row['voter_image'] == null ? null : String(row['voter_image']),
+    summary: row['summary'] == null ? null : String(row['summary']),
     selections: JSON.parse(String(row['selections'])) as TeamSelection[],
     createdAt: Number(row['created_at']),
+    verified: Number(row['verified']) === 1,
   };
+}
+
+const SELECT_COLUMNS = `uuid, voter_name, voter_image, summary, selections, created_at, verified`;
+
+export async function getTeamByPassword(password: string): Promise<Team | null> {
+  await ensureSchema();
+  const result = await getClient().execute({
+    sql: `SELECT ${SELECT_COLUMNS} FROM teams WHERE password = ? LIMIT 1`,
+    args: [password],
+  });
+  const row = result.rows[0];
+  return row ? rowToTeam(row as unknown as Record<string, unknown>) : null;
+}
+
+export async function getTeamByUserId(userId: string): Promise<Team | null> {
+  await ensureSchema();
+  const result = await getClient().execute({
+    sql: `SELECT ${SELECT_COLUMNS} FROM teams WHERE user_id = ? LIMIT 1`,
+    args: [userId],
+  });
+  const row = result.rows[0];
+  return row ? rowToTeam(row as unknown as Record<string, unknown>) : null;
 }
 
 export async function getTeam(uuid: string): Promise<Team | null> {
   await ensureSchema();
   const result = await getClient().execute({
-    sql: `SELECT uuid, voter_name, voter_image, summary, selections, created_at
-          FROM teams WHERE uuid = ? LIMIT 1`,
+    sql: `SELECT ${SELECT_COLUMNS} FROM teams WHERE uuid = ? LIMIT 1`,
     args: [uuid],
   });
   const row = result.rows[0];
-  if (!row) return null;
-  return {
-    uuid: String(row.uuid),
-    voterName: String(row.voter_name),
-    voterImage: row.voter_image === null ? null : String(row.voter_image),
-    summary: row.summary === null ? null : String(row.summary),
-    selections: JSON.parse(String(row.selections)) as TeamSelection[],
-    createdAt: Number(row.created_at),
-  };
+  return row ? rowToTeam(row as unknown as Record<string, unknown>) : null;
 }

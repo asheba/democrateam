@@ -25,6 +25,17 @@ const rows = team
         Boolean(r.candidate),
       )
   : [];
+
+// 1–2 letter fallback for the round avatar when there's no profile photo.
+const initials = team
+  ? team.voterName
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((w) => Array.from(w)[0] ?? '')
+      .join('')
+  : '';
 ---
 
 {
@@ -32,11 +43,21 @@ const rows = team
     <Base title={fmt(t.team.heading, { name: team.voterName })}>
       <div class="container">
         <div class="team-head">
-          {team.voterImage ? (
-            <img class="team-voter-img" src={team.voterImage} alt={team.voterName} />
-          ) : null}
-          <div>
-            <h1>{fmt(t.team.heading, { name: team.voterName })}</h1>
+          <div class="team-identity">
+            <div class="team-avatar-wrap">
+              {team.voterImage ? (
+                <img class="team-avatar" src={team.voterImage} alt={team.voterName} referrerpolicy="no-referrer" />
+              ) : (
+                <span class="team-avatar team-avatar-initials" aria-hidden="true">{initials}</span>
+              )}
+              {team.verified ? (
+                <span class="team-avatar-check" title={t.team.verifiedBadge} aria-label={t.team.verifiedBadge}>✓</span>
+              ) : null}
+            </div>
+            <span class="team-name">{team.voterName}</span>
+          </div>
+          <div class="team-head-text">
+            <h1>{t.team.myTeam}</h1>
             {team.summary ? (
               <div class="team-summary">
                 <h2>{t.team.summaryHeading}</h2>
