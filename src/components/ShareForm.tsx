@@ -12,6 +12,7 @@ import { t, fmt } from '../i18n';
 import { signIn, useSession } from '../lib/auth-client';
 import CandidateCard from './CandidateCard';
 import './ShareForm.css';
+import './candidate-modal.css';
 
 interface Props {
   candidates: Candidate[];

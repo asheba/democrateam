@@ -1,10 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
-import CandidateCard from '../../components/CandidateCard';
+import TeamGrid from '../../components/TeamGrid';
 import { getCandidate } from '../../lib/candidates';
 import { getTeam } from '../../lib/db';
 import { t, fmt } from '../../i18n';
-import '../../components/CandidateGrid.css';
 import './team.css';
 
 // On-demand rendered: each uuid yields a different combination of cards + texts.
@@ -67,15 +66,7 @@ const initials = team
           </div>
         </div>
 
-        <div class="cand-grid team-grid">
-          {rows.map(({ candidate, explanation }) => (
-            <CandidateCard
-              candidate={candidate}
-              note={explanation || undefined}
-              noteLabel={t.team.explanationHeading}
-            />
-          ))}
-        </div>
+        <TeamGrid rows={rows} client:load />
 
         <div class="team-cta">
           <a class="btn" href="/">{t.team.createOwn}</a>
