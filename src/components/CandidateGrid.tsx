@@ -165,18 +165,19 @@ export default function CandidateGrid({ candidates }: Props) {
           <div className="selbar-inner container">
             <div className="selbar-avatars">
               {selectedCandidates.map((c) => (
-                <button
-                  key={c.id}
-                  type="button"
-                  className="selbar-chip"
-                  onClick={() => toggle(c.id)}
-                  title={`${c.name} — ${t.selection.remove}`}
-                  aria-label={`${c.name} — ${t.selection.remove}`}
-                >
+                <div key={c.id} className="selbar-chip">
                   <img src={c.photo} alt="" width={36} height={36} />
                   <span className="selbar-name">{c.name}</span>
-                  <span className="selbar-x" aria-hidden="true">×</span>
-                </button>
+                  <button
+                    type="button"
+                    className="selbar-x"
+                    onClick={() => toggle(c.id)}
+                    title={`${c.name} — ${t.selection.remove}`}
+                    aria-label={`${c.name} — ${t.selection.remove}`}
+                  >
+                    ×
+                  </button>
+                </div>
               ))}
             </div>
 
