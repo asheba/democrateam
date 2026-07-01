@@ -1,3 +1,43 @@
+/* ---- Client-side search / filter row ---- */
+.cand-search {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-block: 8px;
+}
+
+.cand-search-input {
+  flex: 1 1 260px;
+  min-width: 0;
+  padding: 10px 14px;
+  font: inherit;
+  border: 1px solid var(--border, #d5dae2);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.cand-search-input:focus-visible {
+  outline: 2px solid var(--brand-ink);
+  outline-offset: 1px;
+}
+
+.cand-search-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cand-search-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--brand-ink);
+  cursor: pointer;
+}
+
 .cand-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

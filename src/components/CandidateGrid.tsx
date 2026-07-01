@@ -20,6 +20,9 @@ export default function CandidateGrid({ candidates }: Props) {
   const byId = useMemo(() => new Map(candidates.map((c) => [c.id, c])), [candidates]);
   const [selected, setSelected] = useState<string[]>([]);
   const [warnTooMany, setWarnTooMany] = useState(false);
+  const [query, setQuery] = useState('');
+  const [showWomen, setShowWomen] = useState(true);
+  const [showMen, setShowMen] = useState(true);
   const [isLoadingServer, setIsLoadingServer] = useState(false);
   const [serverLoaded, setServerLoaded] = useState(false);
   const didHydrate = useRef(false);
@@ -84,6 +87,17 @@ export default function CandidateGrid({ candidates }: Props) {
     });
   };
 
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return candidates.filter((c) => {
+      const isFemale = c.female === 'true';
+      if (isFemale && !showWomen) return false;
+      if (!isFemale && !showMen) return false;
+      if (q && !(`${c.name} ${c.title} ${c.bio}`.toLowerCase().includes(q))) return false;
+      return true;
+    });
+  }, [candidates, query, showWomen, showMen]);
+
   const count = selected.length;
   const canShare = isValidCount(count);
   const selectedCandidates = selected
@@ -103,17 +117,48 @@ export default function CandidateGrid({ candidates }: Props) {
         </p>
       )}
 
-      <div className="cand-grid">
-        {candidates.map((c) => (
-          <CandidateCard
-            key={c.id}
-            candidate={c}
-            selectable
-            selected={selectedSet.has(c.id)}
-            onToggle={toggle}
+      <div className="cand-search" role="search">
+        <input
+          type="search"
+          className="cand-search-input"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder={t.home.searchPlaceholder}
+          aria-label={t.home.searchLabel}
+        />
+        <label className="cand-search-check">
+          <input
+            type="checkbox"
+            checked={showWomen}
+            onChange={(e) => setShowWomen(e.target.checked)}
           />
-        ))}
+          {t.home.filterWomen}
+        </label>
+        <label className="cand-search-check">
+          <input
+            type="checkbox"
+            checked={showMen}
+            onChange={(e) => setShowMen(e.target.checked)}
+          />
+          {t.home.filterMen}
+        </label>
       </div>
+
+      {filtered.length === 0 ? (
+        <p className="grid-status">{t.home.noResults}</p>
+      ) : (
+        <div className="cand-grid">
+          {filtered.map((c) => (
+            <CandidateCard
+              key={c.id}
+              candidate={c}
+              selectable
+              selected={selectedSet.has(c.id)}
+              onToggle={toggle}
+            />
+          ))}
+        </div>
+      )}
 
       {count > 0 && (
         <div className="selbar" role="region" aria-label={t.selection.barTitle}>

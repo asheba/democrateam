@@ -17,6 +17,8 @@ export interface Candidate {
   photo: string;
   bio: string;
   links: Partial<Record<LinkKey, string>>;
+  /** Stored as the string "true"/"false" in candidates.json. */
+  female: string;
 }
 
 /** Order in which link icons are rendered on a card. */
