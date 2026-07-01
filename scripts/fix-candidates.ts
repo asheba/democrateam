@@ -3,9 +3,11 @@
  *
  * 1. Saves a name→female mapping CSV (scripts/female-mapping.csv) from the
  *    current candidates.json on first run; subsequent runs read it back.
- * 2. Reorders candidates.json to match data/order.txt and assigns new IDs
- *    (cand-01 … cand-51) in that order.  Photo files in public/candidates/
- *    are renamed to stay in sync.
+ * 2. Sorts candidates.json alphabetically by Hebrew name and assigns new IDs
+ *    (cand-01 … cand-NN) in that order.  Photo files in public/candidates/
+ *    are renamed to stay in sync.  The daily on-view reordering happens at
+ *    runtime (see src/lib/daily-order.ts); this file only fixes the canonical
+ *    alphabetical order and stable ids.
  *
  * Run: pnpm tsx scripts/fix-candidates.ts
  */
@@ -18,7 +20,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 const CANDIDATES_FILE = join(ROOT, 'data', 'candidates.json');
-const ORDER_FILE      = join(ROOT, 'data', 'order.txt');
 const CSV_FILE        = join(__dirname, 'female-mapping.csv');
 const PHOTOS_DIR      = join(ROOT, 'public', 'candidates');
 
@@ -53,41 +54,18 @@ for (const line of readFileSync(CSV_FILE, 'utf-8').split('\n').slice(1)) {
   if (m) femaleMap.set(m[1], m[2]);
 }
 
-// ── 3. Parse order.txt ───────────────────────────────────────────────────────
+// ── 3. Sort alphabetically by Hebrew name ────────────────────────────────────
+// Mirrors the collator used in scrape-candidates.ts. Ids are assigned in this
+// stable order; the visible per-day rotation happens at runtime on "/".
 
-const orderedNames: string[] = readFileSync(ORDER_FILE, 'utf-8')
-  .split('\n')
-  .map(l => l.trim())
-  .filter(Boolean);
+const ordered = [...candidates].sort((a, b) => a.name.localeCompare(b.name, 'he'));
 
-if (orderedNames.length !== 51) {
-  throw new Error(`Expected 51 names in order.txt, got ${orderedNames.length}`);
-}
-
-// ── 4. Build lookup: name variants → candidate ───────────────────────────────
-
-const byName = new Map<string, Candidate>(candidates.map(c => [c.name, c]));
-
-function findCandidate(orderName: string): Candidate {
-  // Exact match
-  if (byName.has(orderName)) return byName.get(orderName)!;
-  // Candidate name contains the order name (e.g. "אלוף במיל. נמרוד שפר" ⊇ "נמרוד שפר")
-  for (const [name, c] of byName) {
-    if (name.includes(orderName)) return c;
-  }
-  // Order name contains candidate name
-  for (const [name, c] of byName) {
-    if (orderName.includes(name)) return c;
-  }
-  throw new Error(`Could not find candidate for order name: "${orderName}"`);
-}
-
-// ── 5. Build reordered list with new IDs ────────────────────────────────────
+// ── 4. Build reordered list with new IDs ────────────────────────────────────
 
 const reordered: (Candidate & { _oldPhoto: string })[] = [];
 
-for (let i = 0; i < orderedNames.length; i++) {
-  const c    = findCandidate(orderedNames[i]);
+for (let i = 0; i < ordered.length; i++) {
+  const c    = ordered[i];
   const newId = `cand-${String(i + 1).padStart(2, '0')}`;
   const ext   = extname(c.photo);                      // e.g. ".jpg"
   const newPhoto = `/candidates/${newId}${ext}`;
@@ -101,7 +79,7 @@ for (let i = 0; i < orderedNames.length; i++) {
   });
 }
 
-// ── 6. Rename photo files (two-pass to avoid collisions) ────────────────────
+// ── 5. Rename photo files (two-pass to avoid collisions) ────────────────────
 
 // Pass A: rename old → temp
 for (const c of reordered) {
@@ -118,7 +96,7 @@ for (const c of reordered) {
   if (existsSync(tmpFile)) renameSync(tmpFile, newFile);
 }
 
-// ── 7. Write candidates.json ─────────────────────────────────────────────────
+// ── 6. Write candidates.json ─────────────────────────────────────────────────
 
 const output = reordered.map(({ _oldPhoto: _unused, ...c }) => c);
 writeFileSync(CANDIDATES_FILE, JSON.stringify(output, null, 2) + '\n', 'utf-8');

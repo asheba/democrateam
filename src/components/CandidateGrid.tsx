@@ -27,6 +27,10 @@ export default function CandidateGrid({ candidates }: Props) {
   const [serverLoaded, setServerLoaded] = useState(false);
   const didHydrate = useRef(false);
 
+  // The DOM stays in canonical order; the once-a-day display rotation is applied
+  // purely via CSS `order` by the pre-paint inline script in index.astro (so the
+  // first paint is already in daily order, with no flicker/layout shift).
+
   useEffect(() => {
     const creds = loadTeamCredentials();
     if (creds) {

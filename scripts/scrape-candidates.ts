@@ -157,6 +157,23 @@ async function main() {
     raw.push({ name, title, bio, links, photoUrl });
   }
 
+  // The source lists each candidate twice (a full card plus a near-empty
+  // duplicate). Keep the richest entry per name: most links, then longest bio,
+  // then one that actually has a photo.
+  const score = (r: Raw) =>
+    Object.keys(r.links).length * 1000 + Math.min(r.bio.length, 999) + (r.photoUrl ? 1 : 0);
+  const byName = new Map<string, Raw>();
+  for (const r of raw) {
+    const prev = byName.get(r.name);
+    if (!prev || score(r) > score(prev)) byName.set(r.name, r);
+  }
+  const deduped = [...byName.values()];
+  if (deduped.length !== raw.length) {
+    console.log(`Deduped ${raw.length} cards -> ${deduped.length} unique candidates.`);
+  }
+  raw.length = 0;
+  raw.push(...deduped);
+
   raw.sort((a, b) => a.name.localeCompare(b.name, "he"));
 
   // Rebuild the photo dir from scratch so re-scrapes never leave orphan files.
