@@ -9,9 +9,6 @@ interface Props {
   selectable?: boolean;
   selected?: boolean;
   onToggle?: (id: string) => void;
-  /** Optional note shown via an info tooltip on the photo (e.g. why chosen). CSS-only, no JS. */
-  note?: string;
-  noteLabel?: string;
 }
 
 export default function CandidateCard({
@@ -19,8 +16,6 @@ export default function CandidateCard({
   selectable,
   selected,
   onToggle,
-  note,
-  noteLabel,
 }: Props) {
   const links = LINK_ORDER.filter((key) => candidate.links[key]);
 
@@ -60,22 +55,6 @@ export default function CandidateCard({
           width={400}
           height={400}
         />
-        {note ? (
-          <span className="cand-note">
-            <button
-              type="button"
-              className="cand-note-btn"
-              aria-label={noteLabel ?? note}
-              onClick={(e) => e.stopPropagation()}
-            >
-              i
-            </button>
-            <span className="cand-note-pop" role="tooltip">
-              {noteLabel ? <strong>{noteLabel}</strong> : null}
-              <span>{note}</span>
-            </span>
-          </span>
-        ) : null}
       </div>
 
       <div className="cand-body">

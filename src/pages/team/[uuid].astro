@@ -40,7 +40,6 @@ const initials = team
 // LLM-readable variants of this team page (public but unlisted).
 const mdPath = `${Astro.url.pathname}.md`;
 const jsonPath = `${Astro.url.pathname}.json`;
-const mdUrl = abs(mdPath);
 
 // Per-team OG/social description: prefer the voter's own summary, else list the picks.
 const teamDescription = team
@@ -109,12 +108,8 @@ const teamItemList = team
 
         <div class="team-cta">
           <a class="btn" href="/">{t.team.createOwn}</a>
-          <button class="btn btn-ghost" type="button" data-copy-ai={mdUrl} data-copied-label={t.ai.copied}>
-            {t.ai.copyLink}
-          </button>
         </div>
       </div>
-      <script>import '../../scripts/copy-ai-link';</script>
     </Base>
   ) : (
     <Base title={t.team.notFoundTitle}>

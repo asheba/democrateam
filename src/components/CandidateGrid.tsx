@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type Candidate } from '../lib/candidates';
 import {
+  MIN_SELECTION,
   MAX_SELECTION,
   isValidCount,
   loadSelection,
@@ -188,9 +189,11 @@ export default function CandidateGrid({ candidates }: Props) {
             <div className="selbar-actions">
               <div className="selbar-status">
                 <strong>{fmt(t.selection.counter, { count })}</strong>
-                <span className={`selbar-rule${canShare ? ' ok' : ''}`}>
-                  {warnTooMany ? t.selection.tooMany : t.selection.rule}
-                </span>
+                {warnTooMany ? (
+                  <span className="selbar-rule">{t.selection.tooMany}</span>
+                ) : count < MIN_SELECTION ? (
+                  <span className="selbar-rule">{t.selection.rule}</span>
+                ) : null}
               </div>
               <a
                 className="btn"

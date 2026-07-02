@@ -166,12 +166,13 @@ main {
   transition: background 0.15s ease, transform 0.1s ease;
 }
 
-.btn:hover {
+.btn:hover:not(:disabled):not([aria-disabled='true']) {
   background: var(--brand-blue-2);
 }
 
-.btn:disabled {
-  background: #c2c7d6;
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 

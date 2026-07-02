@@ -29,6 +29,12 @@
   box-shadow: 0 0 0 3px var(--brand-blue), var(--shadow);
 }
 
+/* Keep the selection ring while hovered (incl. the just-clicked card, which
+   retains hover/focus) so it looks identical to every other selected card. */
+.cand-card.is-selected.is-selectable:hover {
+  box-shadow: 0 0 0 3px var(--brand-blue), var(--shadow-lg);
+}
+
 .cand-badge {
   position: absolute;
   inset-inline-start: 12px;
@@ -52,75 +58,6 @@
   object-fit: cover;
   background: #e9ebf6;
   display: block;
-}
-
-/* ---- Info tooltip on photo (CSS-only: hover + focus, works without JS) ---- */
-.cand-note {
-  position: absolute;
-  inset-block-start: 10px;
-  inset-inline-end: 10px;
-  z-index: 3;
-}
-
-.cand-note-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  background: var(--brand-blue);
-  color: #fff;
-  font-weight: 800;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-style: italic;
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  display: grid;
-  place-items: center;
-}
-
-.cand-note-btn:hover,
-.cand-note-btn:focus-visible {
-  background: var(--brand-blue-2);
-  outline: none;
-}
-
-.cand-note-pop {
-  position: absolute;
-  inset-block-start: calc(100% + 8px);
-  inset-inline-end: 0;
-  width: min(260px, 70vw);
-  background: var(--brand-ink);
-  color: #fff;
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  font-size: 0.88rem;
-  line-height: 1.45;
-  box-shadow: var(--shadow-lg);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-4px);
-  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
-  pointer-events: none;
-}
-
-.cand-note-pop strong {
-  display: block;
-  color: var(--brand-yellow);
-  font-size: 0.78rem;
-  margin-bottom: 2px;
-}
-
-.cand-note-pop span {
-  white-space: pre-line;
-}
-
-.cand-note:hover .cand-note-pop,
-.cand-note:focus-within .cand-note-pop {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
 }
 
 .cand-body {
@@ -168,6 +105,7 @@
   background: var(--bg);
   color: var(--brand-ink);
   border: 1px solid var(--border);
+  text-decoration: none;
   transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
 }
 
@@ -188,4 +126,18 @@
   content: attr(aria-label);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+/* On narrow screens the labeled pill breaks the neat row of circular icons,
+   so collapse the CV link to a plain circle icon like the others. */
+@media (max-width: 640px) {
+  .cand-link--cv {
+    width: 36px;
+    padding-inline: 0;
+    gap: 0;
+  }
+
+  .cand-link--cv::after {
+    content: none;
+  }
 }
