@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import TeamGrid from '../../components/TeamGrid';
+import ShareTeam from '../../components/ShareTeam';
 import { getCandidate, LINK_ORDER } from '../../lib/candidates';
 import { getTeam } from '../../lib/db';
 import { abs } from '../../lib/site';
@@ -105,6 +106,20 @@ const teamItemList = team
         </div>
 
         <TeamGrid rows={rows} client:load />
+
+        <ShareTeam
+          voterName={team.voterName}
+          voterImage={team.voterImage}
+          verified={team.verified}
+          summary={team.summary}
+          candidates={rows.map((r) => ({
+            name: r.candidate.name,
+            title: r.candidate.title,
+            photo: r.candidate.photo,
+          }))}
+          shareUrl={abs(Astro.url.pathname)}
+          client:load
+        />
 
         <div class="team-cta">
           <a class="btn" href="/">{t.team.createOwn}</a>

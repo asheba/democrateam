@@ -1,0 +1,41 @@
+/* Share bar on the team page: copy-to-text, WhatsApp/X intents, and a
+   client-rendered PNG export. Sits between the picks grid and the CTA. */
+.share-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  margin-block: 8px 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+
+.share-team-title {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--brand-blue-2);
+}
+
+.share-team-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Keep buttons and anchor-buttons the same height (btn line-height differs
+   between <a> and <button> across browsers). */
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+}
+
+.share-team-error {
+  margin: 0;
+  color: var(--brand-red);
+  font-size: 0.85rem;
+}
