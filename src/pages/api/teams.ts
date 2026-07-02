@@ -8,6 +8,7 @@ import {
   type TeamSelection,
 } from '../../lib/db';
 import { auth } from '../../lib/auth';
+import { generateTeamId } from '../../lib/id';
 import { t } from '../../i18n';
 import { MIN_SELECTION, MAX_SELECTION } from '../../lib/selection';
 import { MAX_VOTER_NAME, MAX_EXPLANATION, MAX_SUMMARY } from '../../lib/limits';
@@ -21,6 +22,24 @@ const json = (data: unknown, status = 200) =>
   });
 
 const bad = (msg: string) => json({ error: msg }, 400);
+
+// Insert a new team with a fresh short id, regenerating on the (astronomically
+// unlikely) primary-key collision. Returns the id that was actually stored.
+async function insertWithShortId(
+  team: Omit<Parameters<typeof insertTeam>[0], 'uuid'>,
+): Promise<string> {
+  for (let attempt = 0; ; attempt++) {
+    const uuid = generateTeamId();
+    try {
+      await insertTeam({ ...team, uuid });
+      return uuid;
+    } catch (err) {
+      const collision = err instanceof Error && /UNIQUE/i.test(err.message);
+      if (collision && attempt < 4) continue;
+      throw err;
+    }
+  }
+}
 
 export const GET: APIRoute = async ({ request, url }) => {
   try {
@@ -102,9 +121,7 @@ export const POST: APIRoute = async ({ request }) => {
         if (!ok) return json({ error: 'storage error' }, 500);
         return json({ uuid: existing.uuid }, 200);
       }
-      const uuid = crypto.randomUUID();
-      await insertTeam({
-        uuid,
+      const uuid = await insertWithShortId({
         voterName,
         voterImage,
         summary,
@@ -136,9 +153,7 @@ export const POST: APIRoute = async ({ request }) => {
       if (!ok) return json({ error: 'storage error' }, 500);
       return json({ uuid: existing.uuid }, 200);
     }
-    const uuid = crypto.randomUUID();
-    await insertTeam({
-      uuid,
+    const uuid = await insertWithShortId({
       voterName,
       voterImage: null,
       summary,
