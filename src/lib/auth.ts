@@ -10,7 +10,7 @@ import { LibsqlDialect } from '@libsql/kysely-libsql';
  * Env is read from both `process.env` (populated on Vercel) and `import.meta.env`
  * (how Astro exposes `.env` during `astro dev`), so credentials resolve in both.
  */
-const metaEnv = import.meta.env as unknown as Record<string, string | undefined>;
+const metaEnv = (import.meta.env ?? {}) as unknown as Record<string, string | undefined>;
 const env = (key: string): string | undefined => process.env[key] ?? metaEnv[key];
 
 const url = env('TURSO_DATABASE_URL') ?? 'file:local.db';

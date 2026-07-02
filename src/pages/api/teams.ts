@@ -5,6 +5,7 @@ import {
   updateTeam,
   getTeamByPassword,
   getTeamByUserId,
+  ensureAuthSchema,
   type TeamSelection,
 } from '../../lib/db';
 import { auth } from '../../lib/auth';
@@ -44,6 +45,7 @@ async function insertWithShortId(
 export const GET: APIRoute = async ({ request, url }) => {
   try {
     // Authenticated users: their (verified) team is keyed by user id.
+    await ensureAuthSchema();
     const session = await auth.api.getSession({ headers: request.headers });
     if (session) {
       const team = await getTeamByUserId(session.user.id);
@@ -104,6 +106,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
+    await ensureAuthSchema();
     const session = await auth.api.getSession({ headers: request.headers });
 
     // ---- Verified path: identity comes from the social profile ----

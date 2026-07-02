@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { auth } from '../../../lib/auth';
 import { t } from '../../../i18n';
-import { getTeamByUserId, getTeamByPassword, claimTeam } from '../../../lib/db';
+import { getTeamByUserId, getTeamByPassword, claimTeam, ensureAuthSchema } from '../../../lib/db';
 
 export const prerender = false;
 
@@ -17,6 +17,7 @@ const json = (data: unknown, status = 200) =>
  * that team over and upgrade it to a verified, user-owned team.
  */
 export const POST: APIRoute = async ({ request }) => {
+  await ensureAuthSchema();
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session) return json({ error: 'unauthorized' }, 401);
 

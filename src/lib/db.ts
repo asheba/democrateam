@@ -56,6 +56,39 @@ function ensureSchema(): Promise<void> {
   return schemaReady;
 }
 
+let authSchemaReady: Promise<void> | undefined;
+
+/**
+ * Create the Better Auth tables (user/session/account/verification) if missing.
+ * Better Auth doesn't auto-migrate at runtime, so we mirror `ensureSchema()` and
+ * create them ourselves — the auth route awaits this before handling a request,
+ * so a fresh Turso database self-heals with no separate deploy/migration step.
+ *
+ * SQL is the authoritative output of `npx @better-auth/cli generate` (sqlite),
+ * with `if not exists` added. Regenerate and update here if the auth config
+ * gains fields or plugins.
+ */
+export function ensureAuthSchema(): Promise<void> {
+  if (!authSchemaReady) {
+    const client = getClient();
+    const statements = [
+      `CREATE TABLE IF NOT EXISTS "user" ("id" text not null primary key, "name" text not null, "email" text not null unique, "emailVerified" integer not null, "image" text, "createdAt" date not null, "updatedAt" date not null)`,
+      `CREATE TABLE IF NOT EXISTS "session" ("id" text not null primary key, "expiresAt" date not null, "token" text not null unique, "createdAt" date not null, "updatedAt" date not null, "ipAddress" text, "userAgent" text, "userId" text not null references "user" ("id") on delete cascade)`,
+      `CREATE TABLE IF NOT EXISTS "account" ("id" text not null primary key, "accountId" text not null, "providerId" text not null, "userId" text not null references "user" ("id") on delete cascade, "accessToken" text, "refreshToken" text, "idToken" text, "accessTokenExpiresAt" date, "refreshTokenExpiresAt" date, "scope" text, "password" text, "createdAt" date not null, "updatedAt" date not null)`,
+      `CREATE TABLE IF NOT EXISTS "verification" ("id" text not null primary key, "identifier" text not null, "value" text not null, "expiresAt" date not null, "createdAt" date not null, "updatedAt" date not null)`,
+      `CREATE INDEX IF NOT EXISTS "session_userId_idx" on "session" ("userId")`,
+      `CREATE INDEX IF NOT EXISTS "account_userId_idx" on "account" ("userId")`,
+      `CREATE INDEX IF NOT EXISTS "verification_identifier_idx" on "verification" ("identifier")`,
+    ];
+    authSchemaReady = (async () => {
+      for (const sql of statements) {
+        await client.execute(sql);
+      }
+    })();
+  }
+  return authSchemaReady;
+}
+
 export interface TeamSelection {
   candidateId: string;
   explanation: string;
