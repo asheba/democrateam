@@ -10,8 +10,10 @@ let schemaReady: Promise<void> | undefined;
 
 function getClient(): Client {
   if (!client) {
-    const url = process.env.TURSO_DATABASE_URL ?? 'file:local.db';
-    const authToken = process.env.TURSO_AUTH_TOKEN;
+    const url =
+      import.meta.env.TURSO_DATABASE_URL ?? process.env.TURSO_DATABASE_URL ?? 'file:local.db';
+    const authToken =
+      import.meta.env.TURSO_AUTH_TOKEN ?? process.env.TURSO_AUTH_TOKEN;
     client = createClient(authToken ? { url, authToken } : { url });
   }
   return client;
