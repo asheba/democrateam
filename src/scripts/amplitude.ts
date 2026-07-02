@@ -4,11 +4,25 @@
 // visitor is, we identify them to Amplitude with their Better Auth user id,
 // email, and team id — so anonymous device activity gets tied to a real user.
 import * as amplitude from '@amplitude/analytics-browser';
+import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser';
 import { authClient } from '../lib/auth-client';
 
 const apiKey = import.meta.env.PUBLIC_AMPLITUDE_API_KEY;
 
+// Fraction of sessions to record for replay (0–1). Configurable via env so we
+// can record 100% in preview and sample down in prod. Defaults to 1 if unset
+// or malformed; out-of-range values are clamped to [0, 1].
+const rawSampleRate = import.meta.env.PUBLIC_AMPLITUDE_REPLAY_SAMPLE_RATE;
+const parsedSampleRate = Number(rawSampleRate);
+const sampleRate =
+  rawSampleRate == null || rawSampleRate === '' || Number.isNaN(parsedSampleRate)
+    ? 1
+    : Math.min(1, Math.max(0, parsedSampleRate));
+
 if (apiKey) {
+  // Register Session Replay before init() so it hooks the session lifecycle.
+  amplitude.add(sessionReplayPlugin({ sampleRate }));
+
   amplitude.init(apiKey, {
     autocapture: {
       attribution: true,
