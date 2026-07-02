@@ -42,6 +42,11 @@ const mdPath = `${Astro.url.pathname}.md`;
 const jsonPath = `${Astro.url.pathname}.json`;
 const mdUrl = abs(mdPath);
 
+// Per-team OG/social description: prefer the voter's own summary, else list the picks.
+const teamDescription = team
+  ? team.summary?.trim() || rows.map((r) => r.candidate.name).join(', ')
+  : undefined;
+
 // schema.org ItemList of the selected candidates, mirroring the visible cards.
 const teamItemList = team
   ? {
@@ -67,7 +72,7 @@ const teamItemList = team
 
 {
   team ? (
-    <Base title={fmt(t.team.heading, { name: team.voterName })}>
+    <Base title={fmt(t.team.heading, { name: team.voterName })} description={teamDescription}>
       <Fragment slot="head">
         <meta name="robots" content="noindex" />
         <link rel="alternate" type="text/markdown" href={mdPath} />
