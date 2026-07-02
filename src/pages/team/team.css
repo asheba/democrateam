@@ -32,16 +32,44 @@
   word-break: break-word;
 }
 
-/* Mobile: stack with avatar + name on top, title + explanation below. */
+/* Mobile: fully stacked and centered — title, avatar, name, then summary.
+   `display: contents` flattens the two columns into one flex context so the
+   children can be interleaved with `order`. */
 @media (max-width: 640px) {
   .team-head {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
   }
 
-  .team-identity {
-    align-self: center;
-    max-width: none;
+  .team-identity,
+  .team-head-text {
+    display: contents;
+  }
+
+  .team-head h1 {
+    order: 1;
+    margin: 0;
+  }
+
+  .team-avatar-wrap {
+    order: 2;
+  }
+
+  .team-name {
+    order: 3;
+  }
+
+  .team-summary {
+    order: 4;
+    width: 100%;
+    text-align: start;
+  }
+
+  /* No profile photo: drop the initials fallback avatar entirely on mobile. */
+  .team-avatar-wrap:has(.team-avatar-initials) {
+    display: none;
   }
 }
 
