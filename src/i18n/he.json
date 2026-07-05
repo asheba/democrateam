@@ -31,6 +31,10 @@
     "searchLabel": "חיפוש מועמדים/ות",
     "filterWomen": "נשים",
     "filterMen": "גברים",
+    "filterCampsLabel": "סינון לפי שיוך",
+    "filterKafri": "כפרי",
+    "filterMeretz": "מרצ",
+    "filterMinority": "מיעוטים",
     "more": "עוד",
     "noResults": "לא מצאנו מועמדים/ות שמתאימים/ות לחיפוש"
   },

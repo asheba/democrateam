@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { type Candidate } from '../lib/candidates';
+import { type Candidate, type CampKey, CAMP_KEYS } from '../lib/candidates';
 import {
   MIN_SELECTION,
   MAX_SELECTION,
@@ -25,6 +25,7 @@ export default function CandidateGrid({ candidates }: Props) {
   const [query, setQuery] = useState('');
   const [showWomen, setShowWomen] = useState(true);
   const [showMen, setShowMen] = useState(true);
+  const [activeCamps, setActiveCamps] = useState<Set<CampKey>>(new Set());
   const [isLoadingServer, setIsLoadingServer] = useState(false);
   const [serverLoaded, setServerLoaded] = useState(false);
   const [modalId, setModalId] = useState<string | null>(null);
@@ -104,16 +105,28 @@ export default function CandidateGrid({ candidates }: Props) {
     });
   };
 
+  const toggleCamp = (key: CampKey) => {
+    setActiveCamps((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return candidates.filter((c) => {
       const isFemale = c.female === 'true';
       if (isFemale && !showWomen) return false;
       if (!isFemale && !showMen) return false;
+      // Camp pills are an AND filter: keep only candidates in every active
+      // camp; with none active, keep everyone.
+      if (![...activeCamps].every((k) => c[k] === 'true')) return false;
       if (q && !(`${c.name} ${c.title} ${c.bio}`.toLowerCase().includes(q))) return false;
       return true;
     });
-  }, [candidates, query, showWomen, showMen]);
+  }, [candidates, query, showWomen, showMen, activeCamps]);
 
   const count = selected.length;
   const canShare = isValidCount(count);
@@ -144,22 +157,46 @@ export default function CandidateGrid({ candidates }: Props) {
           placeholder={t.home.searchPlaceholder}
           aria-label={t.home.searchLabel}
         />
-        <label className="cand-search-check">
-          <input
-            type="checkbox"
-            checked={showWomen}
-            onChange={(e) => setShowWomen(e.target.checked)}
-          />
-          {t.home.filterWomen}
-        </label>
-        <label className="cand-search-check">
-          <input
-            type="checkbox"
-            checked={showMen}
-            onChange={(e) => setShowMen(e.target.checked)}
-          />
-          {t.home.filterMen}
-        </label>
+        <div className="cand-filter" role="group" aria-label={t.home.filterCampsLabel}>
+          {CAMP_KEYS.map((key) => {
+            const active = activeCamps.has(key);
+            const label =
+              key === 'kafri'
+                ? t.home.filterKafri
+                : key === 'meretz'
+                  ? t.home.filterMeretz
+                  : t.home.filterMinority;
+            return (
+              <button
+                key={key}
+                type="button"
+                className={`cand-pill${active ? ' is-active' : ''}`}
+                aria-pressed={active}
+                onClick={() => toggleCamp(key)}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+        <div className="cand-gender">
+          <label className="cand-search-check">
+            <input
+              type="checkbox"
+              checked={showWomen}
+              onChange={(e) => setShowWomen(e.target.checked)}
+            />
+            {t.home.filterWomen}
+          </label>
+          <label className="cand-search-check">
+            <input
+              type="checkbox"
+              checked={showMen}
+              onChange={(e) => setShowMen(e.target.checked)}
+            />
+            {t.home.filterMen}
+          </label>
+        </div>
       </div>
 
       {filtered.length === 0 ? (

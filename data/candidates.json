@@ -13,7 +13,10 @@
       "whatsapp": "https://chat.whatsapp.com/HOFF8xWD3ap4iCWd8tgGgr?mode=ac_t",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/38377008_אבי_דבוש_cv_20260624_122728_קורות_חיים_אבי_דבוש_2026.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "true",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-02",
@@ -25,7 +28,10 @@
       "facebook": "https://www.facebook.com/avishai.lichtensztein",
       "website": "https://democrats.org.il/wp-content/uploads/2026/06/קורות-חיים-אבישי-ליכטנשטיין.docx"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-03",
@@ -39,7 +45,10 @@
       "tiktok": "https://www.tiktok.com/@user9370681271758",
       "website": "https://democrats.org.il/wp-content/uploads/2026/07/אביתר-באר-קוח.docx"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "true",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-04",
@@ -50,7 +59,10 @@
     "links": {
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/311892749_אוליביה_עמנואל_דה_לם_cv_20260624_141504_Resume.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-05",
@@ -64,7 +76,10 @@
       "tiktok": "https://www.tiktok.com/@user4910145910526?_r=1&_t=ZS-97QCkTRQSzI",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/33618976_אחסאן_חלאילה_cv_20260623_103154_קורות1_חיים_דר_אחסאן_1.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "true"
   },
   {
     "id": "cand-06",
@@ -82,7 +97,10 @@
       "whatsapp": "https://chat.whatsapp.com/E7gDxV16TvpKL7bWao8SVS?mode=gi_t",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/40525834_איהאב_שליאן_cv_20260622_095402_LTCRes_Ihab_Shlayan_CV_2025.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "true"
   },
   {
     "id": "cand-07",
@@ -96,7 +114,10 @@
       "x": "https://x.com/Itai_Leshem",
       "linkedin": "https://il.linkedin.com/in/ileshem"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-08",
@@ -112,7 +133,10 @@
       "whatsapp": "https://chat.whatsapp.com/FEMfyGvsGhD3zpQ72Pj4Md",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/56539208_נמרוד_שפר_cv_20260624_210118_Nimrod_CV_2021.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-09",
@@ -125,7 +149,10 @@
       "facebook": "https://www.facebook.com/elis.goldman",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/13277959_אליס_גולדמן_cv_20260624_100523_פרופיל_לאתר_המפלגה.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-10",
@@ -140,7 +167,10 @@
       "x": "https://x.com/EmilieMoatti",
       "whatsapp": "https://chat.whatsapp.com/KEjtndS5tDCJCceFdYn60B?s=cl&p=a&mlu=0&amv=1"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-11",
@@ -153,7 +183,10 @@
       "whatsapp": "https://chat.whatsapp.com/G29DARH13QP3F1Mv8eRys1?mode=gi_c",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/25974965_אמיר_חניפס_cv_20260623_023720_קורות_חיים_אמיר_חניפס.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "true"
   },
   {
     "id": "cand-12",
@@ -167,9 +200,12 @@
       "instagram": "https://www.instagram.com/efratrayten?utm_source=qr",
       "x": "https://x.com/efratrayten1?s=11",
       "tiktok": "https://www.tiktok.com/@efrat_rayten?_r=1&_t=ZS-97QKGITdU0n",
-      "cv": "https://democrats.org.il/wp-content/uploads/2026/06/29258753_אפרת_רייטן_cv_20260623_084900_קורות_חיים_-_אנגלית.pdf"
+      "cv": "https://democrats.org.il/wp-content/uploads/2026/07/חברת-הכנסת-אפרת-רייטן-מרום-1.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-13",
@@ -183,7 +219,10 @@
       "x": "https://x.com/bennyminich/",
       "whatsapp": "https://chat.whatsapp.com/JwUWfTb82OK8pOr8nC9YWT"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-14",
@@ -199,7 +238,10 @@
       "whatsapp": "https://chat.whatsapp.com/CQjaoPq8uPzJGgYeZwI9ZB?s=sh&p=a&mlu=3%20",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/312312440_גאלב_סלאמנה_cv_20260622_235932_קורות_חיים_לפריימריז.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "true"
   },
   {
     "id": "cand-15",
@@ -213,7 +255,10 @@
       "x": "https://x.com/gaby_lasky",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/17904095_גבי_לסקי_cv_20260624_095221_DOC-20260624-WA0003.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "true",
+    "minority": "false"
   },
   {
     "id": "cand-16",
@@ -228,7 +273,10 @@
       "tiktok": "https://www.tiktok.com/@gil_beilin?_r=1&_t=ZS-97QgBL08v5D",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/29647039_גיל_ביילין_cv_20260622_211457_גיל_ביילין_-_מקצועי.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-17",
@@ -244,7 +292,10 @@
       "tiktok": "https://www.tiktok.com/@gilad_kariv",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/25514530_גלעד_קריב_cv_20260623_135805_ביוגרפיה.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-18",
@@ -261,7 +312,10 @@
       "whatsapp": "https://chat.whatsapp.com/IVpb4u7X3nnA3ANhBTNKdS",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/16341042_דימה_שפירא_cv_20260624_231805_דימה_שפירא_-_קורות_חיים_לתפקיד_חבר_כנסת_מטעם_הדמוקרטים_ג4_240626.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "true",
+    "minority": "false"
   },
   {
     "id": "cand-19",
@@ -278,7 +332,10 @@
       "whatsapp": "https://chat.whatsapp.com/Kb8o2jh8eRv6QC0QqFap2n?mode=gi_t",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/55744395_דניאל__אלגרט_cv_20260622_113456_‎⁨קורות_חיים_דני⁩.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-20",
@@ -296,7 +353,10 @@
       "whatsapp": "https://chat.whatsapp.com/D1bk38WgOPsAzt3CATwVPw",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/קורות-חיים-הדס-רגולסקי.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-21",
@@ -312,7 +372,10 @@
       "whatsapp": "https://chat.whatsapp.com/Jc4ozBbPgd1BXzmJinUJXM?s=cl&p=a&ilr=2",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/33065285_חן_אריאלי_cv_20260623_073208_קורות.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-22",
@@ -328,7 +391,10 @@
       "tiktok": "https://www.tiktok.com/@yayafink?_r=1&_t=ZS-97QQc6AHmZ0",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/37814399_יאיר_פינק_cv_20260622_220147_קורות_חיים_-_יאיא_פינק_2026.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-23",
@@ -344,7 +410,10 @@
       "whatsapp": "https://chat.whatsapp.com/Gwb5zU49uWN1OaAV05cyOP",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/25544222_יאיר_רובינשטיין_cv_20260623_175049_קורות_חיים_למועמדות_יאיר_רובינשטיין.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-24",
@@ -357,7 +426,10 @@
       "whatsapp": "https://chat.whatsapp.com/EZX5jFzymr84zpmFlyNmw3?s=sh&p=a&mlu=2",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/304975311_יואב_אגמי_cv_20260622_123341_קורות_החיים.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-25",
@@ -374,7 +446,10 @@
       "whatsapp": "https://chat.whatsapp.com/KOxA0N5lFYYArn8RyuMMwF",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/25700717_יעל_כהן_פארן_cv_20260624_110443_יעל_כהן_פארן_-_קורות_חיים_לדמוקרטים.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-26",
@@ -386,7 +461,10 @@
       "facebook": "https://www.facebook.com/yaron.niv",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/10950665_ירון_ניב_cv_20260622_164941_קורות_חיים_פרופסור_ניב_מקוצר.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-27",
@@ -404,7 +482,10 @@
       "whatsapp": "https://chat.whatsapp.com/F34T3ejgREv2gTKmDTeGJx?brid=YWdncwH_Qv8VIrwrYlyKxXNcChgi",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/33343492_יריב_אופנהיימר_cv_20260624_080034_יריב_אופנהיימר_ביו.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "true",
+    "minority": "false"
   },
   {
     "id": "cand-28",
@@ -422,7 +503,10 @@
       "whatsapp": "https://chat.whatsapp.com/LiGH9NTLizBBq2IMABaVQU?s=cl&p=i&mlu=4",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/300949492_לי_הופמן_אגיב_cv_20260622_194256_לי_הופמן_אגיב.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-29",
@@ -433,7 +517,10 @@
     "links": {
       "facebook": "https://www.facebook.com/share/1H96TWaH4e/"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "true"
   },
   {
     "id": "cand-30",
@@ -448,7 +535,10 @@
       "linkedin": "https://www.linkedin.com/in/mehereta-baruch-ron-71bb4525a/",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/15916208_מהרטה_ברוך_רון_cv_20260623_122259_‎מהרטה_ברוך_רון__2026.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-31",
@@ -463,7 +553,10 @@
       "whatsapp": "https://chat.whatsapp.com/JIXxVG2mYZV5YTb1npLvVn?s=cl&p=a&mlu=1",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/22106165_מוס_רז_cv_20260622_113304_קורות_חיים_מוסי_רז.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-32",
@@ -481,7 +574,10 @@
       "whatsapp": "https://chat.whatsapp.com/HrFDUvl7NnMC5Y4x4V5VMh",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/62865415_מורן_זר_קצנשטיין_cv_20260624_104201_מורן_זר_קוח_2026.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-33",
@@ -497,7 +593,10 @@
       "tiktok": "https://www.tiktok.com/@moran_michel",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/31414667_מורן_מישל_cv_20260624_155420_קורות_חיים_-_מורן__מישל_1.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-34",
@@ -513,11 +612,14 @@
       "tiktok": "https://www.tiktok.com/@michal_rozin",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/24426256_מיכל_רוזין_cv_20260623_192014_קורות_חיים_מיכל_רוזין.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "true",
+    "minority": "false"
   },
   {
     "id": "cand-35",
-    "name": "משה רדמן",
+    "name": "משה רדמן אבוטבול",
     "title": "",
     "photo": "/candidates/cand-35.png",
     "bio": "משה רדמן אבוטבול (41) אב לשלושה נולד וגדל בלוד, יזם היי-טק, מנהיג חברתי ומרצה. קצין מחקר באמ\"ן, עם ניסיון נרחב בניהול ובהוראה, מחזיק בתואר ראשון דו חוגי בכלכלה וחשבונאות מאונ' ת\"א. ב-2014 הקים וניהל את חברת הטק iGroup ובהמשך ייעץ לחברות בינ״ל בתחום ה-AI וכיהן כדירקטור בחברת הנדל״ן הבינ״ל \"ג'י סיטי\". עם ההכרזה על ההפיכה המשפטית הקדיש עצמו למאבק והפך לאחד ממנהיגיה הבולטים של תנועת המחאה בהקמת תשתיות, ברחובות ובבמות.",
@@ -530,7 +632,10 @@
       "linkedin": "https://www.linkedin.com/in/moshe-radman-abutbul-משה-רדמן-אבוטבול-🇮🇱-8a628260/",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/66625690_משה_רדמן_cv_20260624_223217_קורות_חיים_–_משה_רדמן_אבוטבול.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-36",
@@ -548,7 +653,10 @@
       "whatsapp": "https://chat.whatsapp.com/BhQMsp21LvrEc05ASTW2iX",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/21926159_נאווה_רוזוליו_cv_20260624_134251_קורות_חיים_נאווה_רוזוליו.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-37",
@@ -565,7 +673,10 @@
       "linkedin": "https://www.linkedin.com/in/naornarkis/",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/301495917_נאור_נרקיס_cv_20260623_100218_קורות_חיים_נאור_נרקיס.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "true",
+    "minority": "false"
   },
   {
     "id": "cand-38",
@@ -579,7 +690,10 @@
       "x": "https://x.com/nmassalha70106",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/27528884_נדאל_מסאלחה_cv_20260623_071705_‎⁨קובץ_קורות_חיים_משודרג⁩.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "true"
   },
   {
     "id": "cand-39",
@@ -596,7 +710,10 @@
       "whatsapp": "https://chat.whatsapp.com/LIHb0epuuzoDMtBMxBpQIl",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/34763862_נעמה_לזימי_cv_20260625_072139_קורות_חיים_חכ_נעמה_לזימי.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-40",
@@ -613,7 +730,10 @@
       "whatsapp": "https://chat.whatsapp.com/CWLbVaI6uJKHZFYeopLtaf?s=cl&p=a&ilr=0",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/26444687_סומיה_בשיר_cv_20260622_082209_קורות_חיים_-_סומיה_בשיר_חדשים.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "true"
   },
   {
     "id": "cand-41",
@@ -625,7 +745,10 @@
       "website": "https://linktr.ee/AaedBader",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/37147303_עאיד__בדיר__cv_20260622_235310_קורות_חיים_עאיד_בדיר__3.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "true",
+    "minority": "true"
   },
   {
     "id": "cand-42",
@@ -640,12 +763,15 @@
       "x": "https://x.com/AliSalalha",
       "whatsapp": "https://chat.whatsapp.com/IWtcHJnPQx83zyUb5FDTAJ?s=cl&p=i&mlu=1"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "true",
+    "minority": "true"
   },
   {
     "id": "cand-43",
     "name": "עמרי רונן",
-    "title": "",
+    "title": "עו\"ד",
     "photo": "/candidates/cand-43.jpg",
     "bio": "בן 34 נשוי לתמר ואבא לעברי ואורי נלחמתי בשירות הציבורי כשהייתי בפרקליטות, נלחמתי ברחובות כשהייתי ממובילי אחים לנשק, ועשיתי זאת שוב, בכל חזיתות המלחמה הארוכה ביותר שידענו. הצעד הבא הוא להלחם על אופיה ודמותה של מדינת ישראל בכנסת ישראל. לייצג את הציבור הצעיר, המשרת, הציוני והליברלי. לשרת את הציבור ולעשות הכל למען עתיד ילדיי. מאמין בלב שלב שנצליח.",
     "links": {
@@ -656,7 +782,10 @@
       "tiktok": "https://www.tiktok.com/@omri.ronen",
       "whatsapp": "https://chat.whatsapp.com/J2Okv9csj9tGB0HGP5tT4M?mode=gi_t"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-44",
@@ -672,7 +801,10 @@
       "whatsapp": "https://chat.whatsapp.com/CU3PrUpnTmt96lNcmHwMZP",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/34991950_ענבל_וורטמן_שהם_cv_20260622_225446_ענבל_וורטמן_-_שהם_קוח_22.6.26.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "true",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-45",
@@ -690,7 +822,10 @@
       "whatsapp": "https://chat.whatsapp.com/CeQowRStRrs9Vyw2U3JExd",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/27330455_ענבר_בזק_cv_20260622_223507_קורות_חיים_ענבר_בזק_2026.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-46",
@@ -707,7 +842,10 @@
       "linkedin": "https://il.linkedin.com/in/eran-nissan-39b863188",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/305639338_ערן_ניסן_cv_20260622_120242_Eran_Nissan_-_C.V._2026.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-47",
@@ -723,7 +861,10 @@
       "linkedin": "https://www.linkedin.com/in/eran-ערן-etzion-עציון-2843a822",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/22796957_ערן_עציון_cv_20260622_223947_קורות_חיים_יוני_26.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "true",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-48",
@@ -741,7 +882,10 @@
       "whatsapp": "https://chat.whatsapp.com/GoCkRKQBNsR99SxhngPnxE",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/65942849_קטי_פיאסצקי_cv_20260623_123202_קורות_חיים.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-49",
@@ -757,7 +901,10 @@
       "whatsapp": "https://chat.whatsapp.com/KD6m0r3q9qN7Ba755XZYgo?s=cl&p=i&mlu=2&amv=1%20",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/36715472_רם_שפע_cv_20260625_100423_קורות_חיים_רם_שפע_1.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "true",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-50",
@@ -773,7 +920,10 @@
       "linkedin": "https://www.linkedin.com/in/rotem-sivan-hoffmann-43937639",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/37679602_רתם_סיון_cv_20260622_234438_one_pager_rotem_sivan.pdf"
     },
-    "female": "true"
+    "female": "true",
+    "kafri": "true",
+    "meretz": "false",
+    "minority": "false"
   },
   {
     "id": "cand-51",
@@ -791,6 +941,9 @@
       "whatsapp": "https://chat.whatsapp.com/KG40OSzU4UxGpOUZfjm9i8?s=cl&p=i&ilr=0",
       "cv": "https://democrats.org.il/wp-content/uploads/2026/06/61231346_תומר_אביטל_cv_20260623_111200_קורות_חיים_תומר_אביטל_2026.docx.pdf"
     },
-    "female": "false"
+    "female": "false",
+    "kafri": "false",
+    "meretz": "false",
+    "minority": "false"
   }
 ]

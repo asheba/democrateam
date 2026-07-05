@@ -1,8 +1,9 @@
 /**
  * fix-candidates.ts
  *
- * 1. Saves a name→female mapping CSV (scripts/female-mapping.csv) from the
- *    current candidates.json on first run; subsequent runs read it back.
+ * 1. Saves a name→properties mapping CSV (scripts/candidate-properties.csv)
+ *    from the current candidates.json on first run; subsequent runs read it
+ *    back and apply the boolean-ish flags (female, kafri, meretz, minority).
  * 2. Sorts candidates.json alphabetically by Hebrew name and assigns new IDs
  *    (cand-01 … cand-NN) in that order.  Photo files in public/candidates/
  *    are renamed to stay in sync.  The daily on-view reordering happens at
@@ -20,38 +21,55 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 
 const CANDIDATES_FILE = join(ROOT, 'data', 'candidates.json');
-const CSV_FILE        = join(__dirname, 'female-mapping.csv');
+const CSV_FILE        = join(__dirname, 'candidate-properties.csv');
 const PHOTOS_DIR      = join(ROOT, 'public', 'candidates');
+
+// Boolean-ish flag columns (besides `name`) kept in the CSV and mirrored into
+// candidates.json as the strings "true"/"false".
+const FLAGS = ['female', 'kafri', 'meretz', 'minority'] as const;
+type Flag = (typeof FLAGS)[number];
 
 type Candidate = {
   id: string;
   name: string;
   title: string;
-  female: string;
   photo: string;
   bio: string;
   links: Record<string, string>;
-};
+} & Record<Flag, string>;
 
 // ── 1. Load candidates ──────────────────────────────────────────────────────
 
 const candidates: Candidate[] = JSON.parse(readFileSync(CANDIDATES_FILE, 'utf-8'));
 
-// ── 2. Persist name→female mapping to CSV (create if absent) ────────────────
+// ── 2. Persist name→properties mapping to CSV (create if absent) ────────────
 
 if (!existsSync(CSV_FILE)) {
-  const lines = ['name,female', ...candidates.map(c => `"${c.name}",${c.female}`)];
+  const header = ['name', ...FLAGS].join(',');
+  const lines = [
+    header,
+    ...candidates.map(c => [`"${c.name}"`, ...FLAGS.map(f => c[f] ?? 'false')].join(',')),
+  ];
   writeFileSync(CSV_FILE, lines.join('\n') + '\n', 'utf-8');
   console.log(`Created ${CSV_FILE}`);
 } else {
   console.log(`Using existing ${CSV_FILE}`);
 }
 
-// Read mapping from CSV (source of truth for female values)
-const femaleMap = new Map<string, string>();
-for (const line of readFileSync(CSV_FILE, 'utf-8').split('\n').slice(1)) {
-  const m = line.match(/^"([^"]+)",(true|false)\s*$/);
-  if (m) femaleMap.set(m[1], m[2]);
+// Read mapping from CSV (source of truth for the flag columns). The header row
+// declares which flag each column holds, so column order is not assumed.
+const rows = readFileSync(CSV_FILE, 'utf-8').split('\n').filter(l => l.trim());
+const columns = rows[0].split(',').slice(1) as Flag[];
+const flagMap = new Map<string, Partial<Record<Flag, string>>>();
+for (const line of rows.slice(1)) {
+  const m = line.match(/^"([^"]+)",(.+)$/);
+  if (!m) continue;
+  const values = m[2].split(',').map(v => v.trim());
+  const flags: Partial<Record<Flag, string>> = {};
+  columns.forEach((col, i) => {
+    if (values[i] === 'true' || values[i] === 'false') flags[col] = values[i];
+  });
+  flagMap.set(m[1], flags);
 }
 
 // ── 3. Sort alphabetically by Hebrew name ────────────────────────────────────
@@ -70,10 +88,15 @@ for (let i = 0; i < ordered.length; i++) {
   const ext   = extname(c.photo);                      // e.g. ".jpg"
   const newPhoto = `/candidates/${newId}${ext}`;
 
+  const flags = flagMap.get(c.name) ?? {};
+  const resolvedFlags = Object.fromEntries(
+    FLAGS.map(f => [f, flags[f] ?? c[f] ?? 'false']),
+  ) as Record<Flag, string>;
+
   reordered.push({
     ...c,
     id:         newId,
-    female:     femaleMap.get(c.name) ?? c.female,
+    ...resolvedFlags,
     photo:      newPhoto,
     _oldPhoto:  c.photo,
   });

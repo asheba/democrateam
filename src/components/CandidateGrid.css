@@ -1,14 +1,17 @@
-/* ---- Client-side search / filter row ---- */
+/* ---- Client-side search / filter row ----
+   Desktop: search grows to fill, with camp pills and gender toggles beside it
+   on one line. Mobile: each of the three groups drops to its own full-width
+   row (search, then filter pills, then gender). */
 .cand-search {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px 16px;
   flex-wrap: wrap;
   padding-block: 8px;
 }
 
 .cand-search-input {
-  flex: 1 1 260px;
+  flex: 1 1 240px;
   min-width: 0;
   padding: 10px 14px;
   font: inherit;
@@ -20,6 +23,51 @@
 .cand-search-input:focus-visible {
   outline: 2px solid var(--brand-ink);
   outline-offset: 1px;
+}
+
+/* Camp filter pills */
+.cand-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cand-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  color: var(--brand-ink);
+  background: #fff;
+  border: 1px solid var(--border, #d5dae2);
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.cand-pill:hover {
+  border-color: var(--brand-ink);
+}
+
+.cand-pill.is-active {
+  background: var(--brand-ink);
+  border-color: var(--brand-ink);
+  color: #fff;
+}
+
+.cand-pill:focus-visible {
+  outline: 2px solid var(--brand-ink);
+  outline-offset: 1px;
+}
+
+.cand-gender {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .cand-search-check {
@@ -36,6 +84,15 @@
   height: 18px;
   accent-color: var(--brand-ink);
   cursor: pointer;
+}
+
+/* Mobile: stack the three groups, each on its own row. */
+@media (max-width: 640px) {
+  .cand-search-input,
+  .cand-filter,
+  .cand-gender {
+    flex: 1 1 100%;
+  }
 }
 
 .cand-grid {
