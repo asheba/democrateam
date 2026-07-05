@@ -8,6 +8,9 @@
   overflow: hidden;
   box-shadow: var(--shadow);
   transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  /* Suppress the mobile tap flash so tapping "more" doesn't briefly tint the
+     whole (selectable) card light blue. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .cand-card.is-selectable {
@@ -87,12 +90,49 @@
   white-space: pre-line;
 }
 
+/* Row above the social-icon divider: website icon on the start (right in RTL),
+   "more" link pushed to the end (left in RTL). */
+.cand-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cand-website {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-blue-2);
+}
+
+.cand-website:hover {
+  color: var(--brand-blue);
+}
+
 .cand-links {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: auto;
   padding-top: 6px;
+}
+
+/* "more" styled as a link (not a button), pushed to the end of its row. */
+.cand-more {
+  margin-inline-start: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brand-blue-2);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.cand-more:hover {
+  color: var(--brand-blue);
 }
 
 .cand-link {
@@ -139,5 +179,66 @@
 
   .cand-link--cv::after {
     content: none;
+  }
+
+  /* Compact horizontal card so 2+ fit on screen at once: a small circular
+     photo (left) sits inline with the name, the bio spans full width below, the
+     website is a text link, and the social icons form a footer row. Scoped to
+     the grid so cards shown inside the profile modal keep the full layout.
+     `display: contents` on the body lets its children participate directly in
+     the card grid. */
+  .cand-grid .cand-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "photo name"
+      "bio   bio"
+      "meta  meta"
+      "links links";
+    align-items: start;
+    column-gap: 14px;
+    row-gap: 10px;
+    padding: 16px;
+  }
+
+  .cand-grid .cand-body {
+    display: contents;
+  }
+
+  .cand-grid .cand-photo-wrap {
+    grid-area: photo;
+  }
+
+  .cand-grid .cand-photo {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+  }
+
+  .cand-grid .cand-name {
+    grid-area: name;
+    align-self: center;
+    font-size: 1.05rem;
+  }
+
+  .cand-grid .cand-bio {
+    grid-area: bio;
+    font-size: 0.9rem;
+    /* Clamp so tall bios don't stretch the card past ~half the viewport. */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .cand-grid .cand-meta {
+    grid-area: meta;
+  }
+
+  .cand-grid .cand-links {
+    grid-area: links;
+    margin-top: 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
   }
 }

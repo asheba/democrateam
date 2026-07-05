@@ -12,6 +12,7 @@ import {
 import { t, fmt } from '../i18n';
 import CandidateCard from './CandidateCard';
 import './CandidateGrid.css';
+import './candidate-modal.css';
 
 interface Props {
   candidates: Candidate[];
@@ -26,6 +27,7 @@ export default function CandidateGrid({ candidates }: Props) {
   const [showMen, setShowMen] = useState(true);
   const [isLoadingServer, setIsLoadingServer] = useState(false);
   const [serverLoaded, setServerLoaded] = useState(false);
+  const [modalId, setModalId] = useState<string | null>(null);
   const didHydrate = useRef(false);
 
   // The DOM stays in canonical order; the once-a-day display rotation is applied
@@ -75,6 +77,16 @@ export default function CandidateGrid({ candidates }: Props) {
     saveSelection(selected);
   }, [selected]);
 
+  // Close the profile modal on Escape.
+  useEffect(() => {
+    if (!modalId) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setModalId(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [modalId]);
+
   const selectedSet = useMemo(() => new Set(selected), [selected]);
 
   const toggle = (id: string) => {
@@ -108,6 +120,7 @@ export default function CandidateGrid({ candidates }: Props) {
   const selectedCandidates = selected
     .map((id) => byId.get(id))
     .filter((c): c is Candidate => Boolean(c));
+  const modalCandidate = modalId ? byId.get(modalId) ?? null : null;
 
   return (
     <>
@@ -160,6 +173,7 @@ export default function CandidateGrid({ candidates }: Props) {
               selectable
               selected={selectedSet.has(c.id)}
               onToggle={toggle}
+              onMore={setModalId}
             />
           ))}
         </div>
@@ -206,6 +220,27 @@ export default function CandidateGrid({ candidates }: Props) {
                 {t.selection.shareButton}
               </a>
             </div>
+          </div>
+        </div>
+      )}
+
+      {modalCandidate && (
+        <div
+          className="cand-modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setModalId(null)}
+        >
+          <div className="cand-modal-inner" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="cand-modal-close"
+              aria-label={t.team.close}
+              onClick={() => setModalId(null)}
+            >
+              ×
+            </button>
+            <CandidateCard candidate={modalCandidate} />
           </div>
         </div>
       )}

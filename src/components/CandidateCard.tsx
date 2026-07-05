@@ -9,6 +9,8 @@ interface Props {
   selectable?: boolean;
   selected?: boolean;
   onToggle?: (id: string) => void;
+  /** When provided, a "more" button opens the full-profile modal for this id. */
+  onMore?: (id: string) => void;
 }
 
 export default function CandidateCard({
@@ -16,8 +18,17 @@ export default function CandidateCard({
   selectable,
   selected,
   onToggle,
+  onMore,
 }: Props) {
-  const links = LINK_ORDER.filter((key) => candidate.links[key]);
+  // On the main grid (where `onMore` is provided) the website is lifted into its
+  // own row beside "more" so the compact card's social-icon row can't overflow.
+  // Everywhere else — notably the profile popup — it stays inline in the
+  // social-icon row, matching the design of the other buttons.
+  const liftWebsite = Boolean(onMore);
+  const website = liftWebsite ? candidate.links.website : undefined;
+  const links = LINK_ORDER.filter(
+    (key) => candidate.links[key] && !(liftWebsite && key === 'website'),
+  );
 
   const toggle = () => {
     if (selectable) onToggle?.(candidate.id);
@@ -63,6 +74,36 @@ export default function CandidateCard({
           {candidate.name}
         </h3>
         <p className="cand-bio">{candidate.bio}</p>
+
+        {(website || onMore) && (
+          <div className="cand-meta">
+            {website && (
+              <a
+                className="cand-website"
+                href={website}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={t.links.website}
+                aria-label={t.links.website}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {LINK_ICONS.website}
+              </a>
+            )}
+            {onMore && (
+              <button
+                type="button"
+                className="cand-more"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMore(candidate.id);
+                }}
+              >
+                {t.home.more}
+              </button>
+            )}
+          </div>
+        )}
 
         {links.length > 0 && (
           <div className="cand-links">
